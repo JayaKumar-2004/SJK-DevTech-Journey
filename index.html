@@ -4,127 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>S Jaya Kumar | Dev Portfolio</title>
-    <style>
-        /* Base Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #050510;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
-
-        /* Living Background Canvas */
-        #network-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 0;
-            pointer-events: auto; /* Catch mouse/touch for living effect */
-        }
-
-        /* Main Content Container */
-        .content-wrapper {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 50px 20px;
-            pointer-events: none; /* Let touches pass through to canvas when not on cards */
-        }
-
-        /* 3D Graphified Cards */
-        .card {
-            background: rgba(20, 20, 40, 0.6);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(100, 150, 255, 0.2);
-            border-radius: 15px;
-            padding: 30px;
-            margin: 20px 0;
-            width: 100%;
-            max-width: 600px;
-            pointer-events: auto;
-            transform-style: preserve-3d;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        /* 3D Hover/Touch Effect */
-        .card:hover, .card:active {
-            transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateZ(10px);
-            border-color: rgba(100, 150, 255, 0.8);
-            box-shadow: 0 15px 40px rgba(100, 150, 255, 0.2);
-        }
-
-        /* Typography & Layout */
-        h1 {
-            font-size: 2.5rem;
-            color: #88b8ff;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            color: #aaddff;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(100, 150, 255, 0.3);
-            padding-bottom: 5px;
-        }
-
-        p {
-            line-height: 1.6;
-            color: #cccccc;
-            margin-bottom: 15px;
-        }
-
-        .tag-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .tag {
-            background: rgba(100, 150, 255, 0.1);
-            color: #88b8ff;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            border: 1px solid rgba(100, 150, 255, 0.3);
-        }
-
-        .project-title {
-            color: #ffffff;
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin-top: 15px;
-        }
-
-        .highlight {
-            color: #ff9e88;
-        }
-    </style>
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/graphics.css">
+    <link rel="stylesheet" href="css/animations.css">
 </head>
 <body>
 
     <canvas id="network-canvas"></canvas>
 
-    <div class="content-wrapper">
+    <main class="content-wrapper">
         
-        <div class="card">
-            <h1>S Jaya Kumar</h1>
-            <p style="font-size: 1.2rem; color: #fff;">Full-Stack & Mobile Developer</p>
+        <section class="card profile-card">
+            <div class="profile-header">
+                <div class="profile-img-placeholder">SJK</div>
+                <div class="profile-titles">
+                    <h1>S Jaya Kumar</h1>
+                    <p class="subtitle">Full-Stack & Mobile Developer</p>
+                </div>
+            </div>
             <p>Ambitious BCA graduate building practical, user-centric software solutions. Hands-on experience conceptualizing and deploying secure mobile applications and responsive web platforms.</p>
             <div class="tag-container">
                 <span class="tag">Python</span>
@@ -134,157 +31,24 @@
                 <span class="tag">PHP</span>
                 <span class="tag">MySQL</span>
             </div>
-        </div>
+        </section>
 
-        <div class="card">
+        <section class="card projects-card">
             <h2>Core Projects</h2>
             
-            <div class="project-title">Raksha-Suraksha <span class="highlight">(2026)</span></div>
-            <p>Designed a robust mobile security application focused on device anti-theft and personal safety protocols. Engineered automated inactivity SOS triggers.</p>
+            <div class="project-item">
+                <div class="project-title">Raksha-Suraksha <span class="highlight">(2026)</span></div>
+                <p>Designed a robust mobile security application focused on device anti-theft and personal safety protocols. Engineered automated inactivity SOS triggers.</p>
+            </div>
             
-            <div class="project-title">Jarvis Voice Assistant <span class="highlight">(2025-2026)</span></div>
-            <p>Developed a character-themed, voice-automated AI chat system integrating real-time scanning functionalities using Java and APIs.</p>
+            <div class="project-item">
+                <div class="project-title">Jarvis Voice Assistant <span class="highlight">(2025-2026)</span></div>
+                <p>Developed a character-themed, voice-automated AI chat system integrating real-time scanning functionalities using Java and APIs.</p>
+            </div>
+        </section>
 
-            <div class="project-title">Weather Forecasting App</div>
-            <p>Built a dynamic application utilizing RESTful APIs to parse and display real-time meteorological data.</p>
-        </div>
+    </main>
 
-    </div>
-
-    <script>
-        const canvas = document.getElementById('network-canvas');
-        const ctx = canvas.getContext('2d');
-
-        let width, height;
-        let particles = [];
-        
-        // Track mouse and touch movements
-        const mouse = {
-            x: null,
-            y: null,
-            radius: 150 // Connection distance for cursor
-        };
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        // Update cursor position on move (works for desktop)
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.x;
-            mouse.y = e.y;
-        });
-
-        // Update cursor position on touch (works perfectly for your mobile testing)
-        window.addEventListener('touchmove', (e) => {
-            mouse.x = e.touches[0].clientX;
-            mouse.y = e.touches[0].clientY;
-        });
-
-        // Clear cursor position when leaving screen
-        window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
-        window.addEventListener('touchend', () => { mouse.x = null; mouse.y = null; });
-
-        // Particle Class (The nodes of the graph)
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 2 + 1;
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.density = (Math.random() * 30) + 1;
-                this.vx = (Math.random() - 0.5) * 1;
-                this.vy = (Math.random() - 0.5) * 1;
-            }
-
-            draw() {
-                ctx.fillStyle = 'rgba(136, 184, 255, 0.8)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fill();
-            }
-
-            update() {
-                // Natural slow movement
-                this.x += this.vx;
-                this.y += this.vy;
-
-                // Bounce off edges
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
-
-                // Cursor/Touch Interaction (The "Living" part)
-                if (mouse.x != null) {
-                    let dx = mouse.x - this.x;
-                    let dy = mouse.y - this.y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-                    let forceDirectionX = dx / distance;
-                    let forceDirectionY = dy / distance;
-                    let maxDistance = mouse.radius;
-                    let force = (maxDistance - distance) / maxDistance;
-                    let directionX = forceDirectionX * force * this.density;
-                    let directionY = forceDirectionY * force * this.density;
-
-                    if (distance < mouse.radius) {
-                        this.x -= directionX;
-                        this.y -= directionY;
-                    }
-                }
-            }
-        }
-
-        // Initialize nodes based on screen size (less nodes on mobile for performance)
-        function init() {
-            particles = [];
-            let numberOfParticles = (width * height) / 9000;
-            // Cap particles for mobile performance
-            if(numberOfParticles > 100) numberOfParticles = 100; 
-            
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        // Draw the graph lines connecting the nodes
-        function connect() {
-            let opacityValue = 1;
-            for (let a = 0; a < particles.length; a++) {
-                for (let b = a; b < particles.length; b++) {
-                    let distance = ((particles[a].x - particles[b].x) * (particles[a].x - particles[b].x))
-                                 + ((particles[a].y - particles[b].y) * (particles[a].y - particles[b].y));
-                    
-                    if (distance < (width/7) * (height/7)) {
-                        opacityValue = 1 - (distance / 10000);
-                        ctx.strokeStyle = 'rgba(100, 150, 255,' + opacityValue + ')';
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[a].x, particles[a].y);
-                        ctx.lineTo(particles[b].x, particles[b].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        // Animation Loop
-        function animate() {
-            requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, width, height);
-            
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-            }
-            connect();
-        }
-
-        init();
-        animate();
-    </script>
+    <script src="js/script.js"></script>
 </body>
 </html>
