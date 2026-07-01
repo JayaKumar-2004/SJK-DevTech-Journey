@@ -1,0 +1,30 @@
+/* Enable 3D Space */
+.card {
+    transform-style: preserve-3d;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                border-color 0.3s ease, 
+                box-shadow 0.3s ease;
+}
+
+/* 3D Hover & Touch Effects */
+.card:hover, .card:active {
+    transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateZ(10px);
+    border-color: rgba(136, 184, 255, 0.5);
+    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.2);
+}
+
+/* Smooth fade-in on load */
+.content-wrapper {
+    animation: fadeIn 1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
