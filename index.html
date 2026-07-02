@@ -3,47 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S Jaya Kumar | Dev Portfolio</title>
+    <title>S Jaya Kumar | Full Stack Developer</title>
+    <!-- Google Fonts for that modern, clean look -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/graphics.css">
     <link rel="stylesheet" href="css/animations.css">
 </head>
 <body>
 
+    <!-- Subtle Living Background -->
     <canvas id="network-canvas"></canvas>
+
+    <!-- Floating Navigation -->
+    <nav id="navbar">
+        <div class="nav-brand">SJK.dev</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
     <main class="content-wrapper">
         
-        <section class="card profile-card">
-            <div class="profile-header">
-                <div class="profile-img-placeholder">SJK</div>
-                <div class="profile-titles">
-                    <h1>S Jaya Kumar</h1>
-                    <p class="subtitle">Full-Stack & Mobile Developer</p>
+        <!-- Hero Section -->
+        <section id="home" class="hero-section reveal">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <p class="availability">🟢 AVAILABLE FOR OPPORTUNITIES</p>
+                    <h1>Hi, I'm <span class="gradient-text">S Jaya Kumar</span><br>Full-Stack Developer.</h1>
+                    <p class="hero-desc">Ambitious BCA graduate crafting logic-driven, responsive web and mobile applications. Currently building secure systems and eager to leverage deep technical expertise in a dynamic environment.</p>
+                    <div class="hero-buttons">
+                        <a href="#contact" class="btn btn-primary">Contact Me</a>
+                        <a href="#" class="btn btn-secondary">⬇ Download Resume</a>
+                    </div>
                 </div>
-            </div>
-            <p>Ambitious BCA graduate building practical, user-centric software solutions. Hands-on experience conceptualizing and deploying secure mobile applications and responsive web platforms.</p>
-            <div class="tag-container">
-                <span class="tag">Python</span>
-                <span class="tag">JavaScript</span>
-                <span class="tag">Java</span>
-                <span class="tag">HTML5/CSS3</span>
-                <span class="tag">PHP</span>
-                <span class="tag">MySQL</span>
+                <div class="hero-image-container">
+                    <div class="profile-glow-ring">
+                        <div class="profile-img-placeholder">SJK</div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section class="card projects-card">
-            <h2>Core Projects</h2>
-            
-            <div class="project-item">
-                <div class="project-title">Raksha-Suraksha <span class="highlight">(2026)</span></div>
-                <p>Designed a robust mobile security application focused on device anti-theft and personal safety protocols. Engineered automated inactivity SOS triggers.</p>
+        <!-- About & Education Section -->
+        <section id="about" class="about-section reveal">
+            <div class="about-grid">
+                <div class="about-text">
+                    <h2>Curious mind.<br><span class="gradient-text">Clean code.</span></h2>
+                    <p>I am a final-year BCA student at Bangalore University with a strong foundation in full-stack architecture. I thrive on conceptualizing and deploying secure mobile applications and data-driven scripts.</p>
+                </div>
+                <div class="education-card glass-card">
+                    <h3>🎓 Education</h3>
+                    <div class="timeline-item">
+                        <h4>Bachelor of Computer Applications (BCA)</h4>
+                        <p>Bangalore University | 2026</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>CEBA (Computer Science)</h4>
+                        <p>12th (PUC) Karnataka State Board | 2023</p>
+                    </div>
+                </div>
             </div>
-            
-            <div class="project-item">
-                <div class="project-title">Jarvis Voice Assistant <span class="highlight">(2025-2026)</span></div>
-                <p>Developed a character-themed, voice-automated AI chat system integrating real-time scanning functionalities using Java and APIs.</p>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="skills-section reveal">
+            <h2>My <span class="gradient-text">Toolkit</span></h2>
+            <div class="skills-grid">
+                <div class="glass-card skill-category">
+                    <h3>Languages & Core</h3>
+                    <div class="skill-bar"><span class="skill-name">Python</span><div class="bar-bg"><div class="bar-fill" style="width: 90%;"></div></div></div>
+                    <div class="skill-bar"><span class="skill-name">Java</span><div class="bar-bg"><div class="bar-fill" style="width: 85%;"></div></div></div>
+                    <div class="skill-bar"><span class="skill-name">JavaScript</span><div class="bar-bg"><div class="bar-fill" style="width: 80%;"></div></div></div>
+                </div>
+                <div class="glass-card skill-category">
+                    <h3>Web & Databases</h3>
+                    <div class="skill-bar"><span class="skill-name">HTML5 / CSS3</span><div class="bar-bg"><div class="bar-fill" style="width: 95%;"></div></div></div>
+                    <div class="skill-bar"><span class="skill-name">PHP</span><div class="bar-bg"><div class="bar-fill" style="width: 75%;"></div></div></div>
+                    <div class="skill-bar"><span class="skill-name">MySQL</span><div class="bar-bg"><div class="bar-fill" style="width: 85%;"></div></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects-section reveal">
+            <h2>Things I've <span class="gradient-text">Built</span></h2>
+            <div class="projects-grid">
+                
+                <div class="glass-card project-card">
+                    <div class="project-header">
+                        <h3>Raksha-Suraksha</h3>
+                        <span class="project-year">2026</span>
+                    </div>
+                    <p>Designed a robust mobile security application focused on device anti-theft and personal safety protocols. Engineered automated inactivity SOS triggers for emergency response.</p>
+                    <div class="project-tags">
+                        <span>Mobile Arch</span><span>Security</span><span>PHP</span>
+                    </div>
+                </div>
+
+                <div class="glass-card project-card">
+                    <div class="project-header">
+                        <h3>Jarvis Voice Assistant</h3>
+                        <span class="project-year">2025-2026</span>
+                    </div>
+                    <p>Developed a character-themed, voice-automated AI chat system integrating real-time scanning functionalities.</p>
+                    <div class="project-tags">
+                        <span>Java</span><span>XML</span><span>APIs</span>
+                    </div>
+                </div>
+
+                <div class="glass-card project-card">
+                    <div class="project-header">
+                        <h3>Weather Forecasting App</h3>
+                        <span class="project-year">2025</span>
+                    </div>
+                    <p>Built a dynamic application utilizing RESTful APIs to parse and display real-time meteorological data.</p>
+                    <div class="project-tags">
+                        <span>REST APIs</span><span>JavaScript</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section reveal">
+            <div class="contact-grid">
+                <div class="contact-text">
+                    <h2>Let's build something <span class="gradient-text">great</span></h2>
+                    <p>Have a project in mind, or just want to connect? Drop me a message.</p>
+                    <p class="contact-info">📧 kumarsjaya141@gmail.com</p>
+                    <p class="contact-info">📍 Nelamangala, Bangalore</p>
+                </div>
+                <div class="glass-card contact-form">
+                    <input type="text" placeholder="Your Name" class="form-input">
+                    <input type="email" placeholder="Email Address" class="form-input">
+                    <textarea placeholder="Your Message" rows="4" class="form-input"></textarea>
+                    <button class="btn btn-primary" style="width: 100%;">Send Message 🚀</button>
+                </div>
             </div>
         </section>
 
