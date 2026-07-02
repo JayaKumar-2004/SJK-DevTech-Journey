@@ -1,5 +1,3 @@
-
-/* Base Reset & Sizing */
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +6,6 @@
 
 body {
     overflow-x: hidden;
-    min-height: 100vh;
 }
 
 /* Background Canvas Position */
@@ -18,48 +15,84 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 0;
+    z-index: -1;
 }
 
-/* Main Content Alignment */
+/* Navigation Layout */
+#navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+/* Main Container */
 .content-wrapper {
     position: relative;
     z-index: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 40px 15px;
-    gap: 30px;
-    pointer-events: none; 
+    padding: 100px 5vw;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 100px;
 }
 
-/* Card Structure */
-.card {
+/* Section Layouts */
+section {
     width: 100%;
-    max-width: 650px;
-    padding: 35px 25px;
-    border-radius: 16px;
-    pointer-events: auto;
+    padding: 40px 0;
 }
 
-.profile-header {
+.hero-content {
     display: flex;
     align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
+    justify-content: space-between;
+    gap: 50px;
+    min-height: 70vh;
 }
 
-.tag-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 20px;
+.hero-text { flex: 1; }
+.hero-image-container { flex: 1; display: flex; justify-content: center; }
+.hero-buttons { display: flex; gap: 15px; margin-top: 30px; }
+
+.about-grid, .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
 }
 
-.project-item {
-    margin-bottom: 25px;
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
 }
 
-.project-item:last-child {
-    margin-bottom: 0;
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    #navbar { padding: 15px 20px; flex-direction: column; gap: 15px; }
+    .nav-links { gap: 15px; font-size: 0.9rem; }
+    .hero-content { flex-direction: column-reverse; text-align: center; }
+    .hero-buttons { justify-content: center; flex-direction: column; }
+    .about-grid, .contact-grid { grid-template-columns: 1fr; }
 }
