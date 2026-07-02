@@ -1,78 +1,115 @@
-/* Typography & Colors */
 body {
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    background-color: #050510;
+    font-family: 'Poppins', sans-serif;
+    background-color: #030305;
     color: #e2e8f0;
 }
 
-/* Glassmorphism Card Style */
-.card {
-    background: rgba(15, 20, 35, 0.65);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(136, 184, 255, 0.15);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+/* Typography & Colors */
+h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 20px; color: #fff; }
+h2 { font-size: 2.5rem; margin-bottom: 20px; color: #fff; }
+h3 { font-size: 1.3rem; margin-bottom: 15px; color: #fff; }
+p { line-height: 1.7; color: #a1a1aa; font-size: 1rem; }
+
+.gradient-text {
+    background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* Text Styles */
-h1 {
-    font-size: 1.8rem;
-    color: #ffffff;
-    letter-spacing: 1px;
+.availability {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: #10b981;
+    margin-bottom: 15px;
+    font-weight: 600;
 }
 
-h2 {
-    font-size: 1.4rem;
-    color: #88b8ff;
-    margin-bottom: 20px;
-    border-bottom: 1px solid rgba(136, 184, 255, 0.2);
-    padding-bottom: 8px;
+/* Glassmorphism Cards */
+.glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 30px;
 }
 
-.subtitle {
-    font-size: 1rem;
-    color: #88b8ff;
-    font-weight: 500;
+/* Buttons */
+.btn {
+    padding: 12px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+    cursor: pointer;
 }
 
-p {
-    line-height: 1.7;
-    color: #cbd5e1;
-    font-size: 0.95rem;
+.btn-primary {
+    background: linear-gradient(90deg, #06b6d4, #3b82f6);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
 }
 
-/* Profile Picture Placeholder */
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Profile Image Glowing Border */
+.profile-glow-ring {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #06b6d4, #8b5cf6);
+    padding: 5px; /* Creates the border width */
+}
+
 .profile-img-placeholder {
-    width: 70px;
-    height: 70px;
-    background: linear-gradient(135deg, #88b8ff, #3b82f6);
+    width: 100%;
+    height: 100%;
+    background-color: #0a0a0f;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
-    color: #050510;
-    font-size: 1.2rem;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #3b82f6;
 }
 
-/* Tags and Highlights */
-.tag {
-    background: rgba(59, 130, 246, 0.15);
-    color: #93c5fd;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    border: 1px solid rgba(59, 130, 246, 0.3);
+/* Navigation Styles */
+#navbar.scrolled {
+    background: rgba(10, 10, 15, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
+.nav-brand { font-size: 1.5rem; font-weight: 700; color: #fff; }
+.nav-links a { color: #a1a1aa; text-decoration: none; font-weight: 500; }
+.nav-links a:hover { color: #06b6d4; }
 
-.project-title {
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 5px;
-}
+/* Progress Bars */
+.skill-bar { margin-bottom: 15px; }
+.skill-name { font-size: 0.9rem; color: #e2e8f0; display: block; margin-bottom: 5px; }
+.bar-bg { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; background: linear-gradient(90deg, #06b6d4, #8b5cf6); border-radius: 4px; }
 
-.highlight {
-    color: #fca5a5;
-    font-size: 0.9rem;
+/* Projects & Forms */
+.project-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.project-year { font-size: 0.8rem; color: #06b6d4; background: rgba(6, 182, 212, 0.1); padding: 4px 10px; border-radius: 12px; }
+.project-tags { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.project-tags span { font-size: 0.75rem; color: #a1a1aa; background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 4px; }
+
+.form-input {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #fff;
+    font-family: inherit;
 }
+.form-input:focus { outline: none; border-color: #06b6d4; }
