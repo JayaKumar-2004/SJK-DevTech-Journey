@@ -1,15 +1,39 @@
 document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- 1. Scroll Reveal Animation Logic ---
+    const reveals = document.querySelectorAll('.reveal');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.15 }); // Triggers when 15% of the section is visible
+
+    reveals.forEach(reveal => {
+        revealObserver.observe(reveal);
+    });
+
+    // --- 2. Navbar Scroll Effect ---
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // --- 3. Refined Living Canvas Background ---
     const canvas = document.getElementById('network-canvas');
     const ctx = canvas.getContext('2d');
 
     let width, height;
     let particles = [];
     
-    const mouse = {
-        x: null,
-        y: null,
-        radius: 120 
-    };
+    // Track interactions
+    const mouse = { x: null, y: null, radius: 150 };
 
     function resize() {
         width = canvas.width = window.innerWidth;
@@ -18,16 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', resize);
     resize();
 
-    window.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-    });
-
-    window.addEventListener('touchmove', (e) => {
-        mouse.x = e.touches[0].clientX;
-        mouse.y = e.touches[0].clientY;
-    });
-
+    window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+    window.addEventListener('touchmove', (e) => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
     window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
     window.addEventListener('touchend', () => { mouse.x = null; mouse.y = null; });
 
@@ -35,14 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
         constructor() {
             this.x = Math.random() * width;
             this.y = Math.random() * height;
-            this.size = Math.random() * 2 + 0.5;
-            this.density = (Math.random() * 20) + 1;
-            this.vx = (Math.random() - 0.5) * 0.8;
-            this.vy = (Math.random() - 0.5) * 0.8;
+            this.size = Math.random() * 1.5 + 0.5;
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
+            // Assign either cyan or purple to match theme
+            this.color = Math.random() > 0.5 ? 'rgba(6, 182, 212, 0.4)' : 'rgba(139, 92, 246, 0.4)';
         }
 
         draw() {
-            ctx.fillStyle = 'rgba(136, 184, 255, 0.6)';
+            ctx.fillStyle = this.color;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.closePath();
@@ -62,14 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 let distance = Math.sqrt(dx * dx + dy * dy);
                 
                 if (distance < mouse.radius) {
-                    let forceDirectionX = dx / distance;
-                    let forceDirectionY = dy / distance;
                     let force = (mouse.radius - distance) / mouse.radius;
-                    let directionX = forceDirectionX * force * this.density;
-                    let directionY = forceDirectionY * force * this.density;
-
-                    this.x -= directionX;
-                    this.y -= directionY;
+                    this.x -= (dx / distance) * force * 5;
+                    this.y -= (dy / distance) * force * 5;
                 }
             }
         }
@@ -77,25 +89,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function init() {
         particles = [];
-        let numberOfParticles = (width * height) / 10000;
-        if(numberOfParticles > 80) numberOfParticles = 80; 
-        
-        for (let i = 0; i < numberOfParticles; i++) {
-            particles.push(new Particle());
-        }
+        let numberOfParticles = (width * height) / 12000;
+        if(numberOfParticles > 60) numberOfParticles = 60; // Performance cap
+        for (let i = 0; i < numberOfParticles; i++) particles.push(new Particle());
     }
 
     function connect() {
-        let opacityValue = 1;
         for (let a = 0; a < particles.length; a++) {
             for (let b = a; b < particles.length; b++) {
-                let distance = ((particles[a].x - particles[b].x) * (particles[a].x - particles[b].x))
-                             + ((particles[a].y - particles[b].y) * (particles[a].y - particles[b].y));
+                let distance = ((particles[a].x - particles[b].x) ** 2) + ((particles[a].y - particles[b].y) ** 2);
                 
-                if (distance < (width/8) * (height/8)) {
-                    opacityValue = 1 - (distance / 12000);
-                    ctx.strokeStyle = 'rgba(100, 150, 255,' + opacityValue + ')';
-                    ctx.lineWidth = 0.8;
+                if (distance < (width/10) * (height/10)) {
+                    let opacityValue = 1 - (distance / 15000);
+                    // Subtle glowing line
+                    ctx.strokeStyle = `rgba(139, 92, 246, ${opacityValue * 0.2})`;
+                    ctx.lineWidth = 0.5;
                     ctx.beginPath();
                     ctx.moveTo(particles[a].x, particles[a].y);
                     ctx.lineTo(particles[b].x, particles[b].y);
