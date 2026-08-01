@@ -3,152 +3,444 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S Jaya Kumar | Full Stack Developer</title>
-    <!-- Google Fonts for that modern, clean look -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/graphics.css">
-    <link rel="stylesheet" href="css/animations.css">
+    <title>Jack | Time-Based Environment Intro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* --- CSS VARIABLES --- */
+        :root {
+            --tree-color: #0d1a00;
+            --ground-color: #1a3300;
+            --hill-color: #142900;
+            --road-color: #2a2a2a;
+            --animal-color: #050a00; 
+        }
+
+        body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000; }
+
+        #environment {
+            position: relative; width: 100vw; height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; transition: background 2s ease-in-out; z-index: 1; overflow: hidden;
+        }
+
+        #greeting-text {
+            font-size: clamp(2rem, 5vw, 4rem); color: #ffffff; text-align: center; text-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+            z-index: 30; opacity: 0; animation: fadeInText 3s ease-in-out forwards; animation-delay: 1s;
+        }
+        @keyframes fadeInText { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+
+        /* Celestial Bodies */
+        .celestial-body { position: absolute; border-radius: 50%; z-index: 2; left: 50%; transform: translateX(-50%); }
+        .sun { width: clamp(80px, 15vw, 150px); height: clamp(80px, 15vw, 150px); background: radial-gradient(circle, #ffd700, #ff8c00); box-shadow: 0 0 60px #ff8c00; }
+        .moon { width: clamp(60px, 12vw, 120px); height: clamp(60px, 12vw, 120px); background: radial-gradient(circle, #f4f6f0, #c8c8c8); box-shadow: 0 0 30px #ffffff, inset -15px -15px 0 rgba(0,0,0,0.2); }
+
+        /* Stars */
+        #stars-container { position: absolute; top: 0; left: 0; width: 100%; height: 70%; z-index: 1; opacity: 0; transition: opacity 2s ease-in-out; }
+        .star { position: absolute; background: white; border-radius: 50%; box-shadow: 0 0 5px white; animation: twinkle 3s infinite alternate; }
+        @keyframes twinkle { 0% { opacity: 0.3; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
+
+        /* --- FLOCK OF BIRDS --- */
+        #birds-container { position: absolute; top: 5%; left: 0; width: 100%; height: 40vh; z-index: 3; pointer-events: none; }
+        
+        .bird-wrapper { 
+            position: absolute; width: 30px; height: 15px; left: -20vw;
+            animation: flyAcross var(--speed) linear infinite var(--delay);
+        }
+        .bird { 
+            position: relative; width: 100%; height: 100%; 
+            animation: swoop var(--swoop-speed) ease-in-out infinite alternate;
+        }
+        
+        .bird::before, .bird::after { 
+            content: ''; position: absolute; top: 5px; width: 16px; height: 3px; 
+            background: var(--animal-color); border-radius: 3px; transition: background 2s;
+        }
+        .bird::before { left: 0; transform-origin: right center; animation: flapRight var(--flap-speed) infinite alternate ease-in-out; }
+        .bird::after { right: 0; transform-origin: left center; animation: flapLeft var(--flap-speed) infinite alternate ease-in-out; }
+        
+        @keyframes flapRight { 0% { transform: rotate(25deg); } 100% { transform: rotate(-35deg); } }
+        @keyframes flapLeft { 0% { transform: rotate(-25deg); } 100% { transform: rotate(35deg); } }
+        @keyframes flyAcross { from { transform: translateX(0) scale(var(--scale)); } to { transform: translateX(140vw) scale(var(--scale)); } }
+        @keyframes swoop { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(30px); } }
+
+        .bird-1 { top: 10%; --scale: 1.2; --speed: 25s; --delay: 0s; --swoop-speed: 3s; --flap-speed: 0.4s; }
+        .bird-2 { top: 30%; --scale: 0.9; --speed: 35s; --delay: 5s; --swoop-speed: 4s; --flap-speed: 0.3s; }
+        .bird-3 { top: 50%; --scale: 1.5; --speed: 20s; --delay: 2s; --swoop-speed: 2.5s; --flap-speed: 0.5s; }
+        .bird-4 { top: 20%; --scale: 1.1; --speed: 28s; --delay: 12s; --swoop-speed: 3.5s; --flap-speed: 0.35s; }
+        .bird-5 { top: 70%; --scale: 0.7; --speed: 40s; --delay: 1s; --swoop-speed: 5s; --flap-speed: 0.25s; }
+        .bird-6 { top: 40%; --scale: 1.3; --speed: 22s; --delay: 8s; --swoop-speed: 2.8s; --flap-speed: 0.45s; }
+        .bird-7 { top: 80%; --scale: 1.0; --speed: 30s; --delay: 15s; --swoop-speed: 4.2s; --flap-speed: 0.38s; }
+
+        /* Clouds */
+        .clouds { position: absolute; top: 10%; width: 100%; height: 200px; z-index: 4; opacity: 0.7; }
+        .cloud { position: absolute; background: #fff; border-radius: 50px; animation: floatCloud linear infinite; }
+        .cloud::before, .cloud::after { content: ''; position: absolute; background: #fff; border-radius: 50%; }
+        .cloud-1 { width: 140px; height: 50px; top: 10vh; left: -200px; animation-duration: 35s; } .cloud-1::before { width: 70px; height: 70px; top: -35px; left: 20px; } .cloud-1::after { width: 60px; height: 60px; top: -25px; left: 70px; }
+        .cloud-2 { width: 100px; height: 35px; top: 25vh; left: -100px; animation-duration: 45s; animation-delay: 10s; transform: scale(0.8); opacity: 0.5; } .cloud-2::before { width: 50px; height: 50px; top: -25px; left: 10px; } .cloud-2::after { width: 40px; height: 40px; top: -15px; left: 45px; }
+        .cloud-3 { width: 180px; height: 60px; top: 5vh; left: -250px; animation-duration: 60s; animation-delay: 5s; transform: scale(0.6); opacity: 0.4; } .cloud-3::before { width: 90px; height: 90px; top: -45px; left: 25px; } .cloud-3::after { width: 80px; height: 80px; top: -35px; left: 85px; }
+        @keyframes floatCloud { from { transform: translateX(-250px); } to { transform: translateX(120vw); } }
+
+        /* --- LANDSCAPE & HOUSES --- */
+        .landscape { position: absolute; bottom: 0; left: 0; width: 100%; height: 40vh; min-height: 280px; z-index: 10; }
+        .skyline { position: absolute; bottom: 25%; left: 0; width: 100%; height: 100px; background: repeating-linear-gradient(90deg, transparent 0, transparent 2vw, #0b162c 2vw, #0b162c 4vw, transparent 4vw, transparent 5vw, #111c33 5vw, #111c33 9vw, transparent 9vw, transparent 11vw, #091122 11vw, #091122 13vw); opacity: 0.5; z-index: 8; transition: all 2s; }
+        
+        .hill { position: absolute; bottom: 18vh; background: var(--hill-color); border-radius: 50% 50% 0 0; transition: background 2s; z-index: 9; }
+        .hill-1 { width: 60vw; height: 120px; left: -10vw; z-index: 11; } .hill-2 { width: 70vw; height: 160px; right: -15vw; z-index: 10; } .hill-3 { width: 50vw; height: 90px; left: 30vw; bottom: 22vh; z-index: 9; }
+        
+        .ground { position: absolute; bottom: 12vh; left: 0; width: 100%; height: 10vh; background: var(--ground-color); border-top: 2px solid #264d00; z-index: 11; transition: background 2s, border-color 2s; }
+
+        .house { position: absolute; background: #2c3e50; z-index: 11; transition: background 2s; }
+        .house-roof { position: absolute; width: 0; height: 0; border-left-color: transparent; border-right-color: transparent; border-style: solid; transition: border-bottom-color 2s; }
+        .house-window { position: absolute; background: #7f8c8d; border-radius: 2px; transition: all 1s; }
+        
+        .h1 { bottom: 22vh; right: 15vw; width: 70px; height: 50px; } .h1 .house-roof { top: -35px; left: -10px; border-width: 0 45px 35px 45px; border-bottom-color: #1a252f; } .h1 .window-1 { top: 15px; left: 12px; width: 15px; height: 20px; } .h1 .window-2 { top: 15px; right: 12px; width: 15px; height: 20px; }
+        .h2 { bottom: 20vh; left: 20vw; width: 50px; height: 35px; } .h2 .house-roof { top: -25px; left: -5px; border-width: 0 30px 25px 30px; border-bottom-color: #1a252f; } .h2 .window-1 { top: 10px; left: 18px; width: 14px; height: 14px; }
+        .h3 { bottom: 24vh; left: 45vw; width: 45px; height: 60px; } .h3 .house-roof { top: -20px; left: -5px; border-width: 0 27px 20px 27px; border-bottom-color: #151e27; } .h3 .window-1 { top: 10px; left: 15px; width: 15px; height: 15px; } .h3 .window-2 { top: 35px; left: 15px; width: 15px; height: 15px; }
+
+        /* --- WILDLIFE / ANIMALS (FIRMLY PLANTED IN THE GRASS) --- */
+        .animal-part { position: absolute; background: var(--animal-color); transition: background 2s; }
+
+        /* Planted perfectly in the 12vh to 22vh grassy zone */
+        .grazing-animal { position: absolute; bottom: 14vh; left: 35vw; width: 25px; height: 15px; z-index: 12; }
+        .gz-body { width: 22px; height: 12px; border-radius: 10px; }
+        .gz-neck { width: 6px; height: 14px; top: 5px; right: -4px; border-radius: 5px; transform-origin: top left; animation: graze 4s ease-in-out infinite alternate; }
+        .gz-head { width: 10px; height: 6px; border-radius: 50%; bottom: -2px; right: -4px; }
+        .gz-leg { width: 3px; height: 10px; top: 10px; border-radius: 2px; }
+        .gz-l1 { left: 4px; } .gz-l2 { left: 8px; } .gz-l3 { right: 4px; } .gz-l4 { right: 8px; }
+        @keyframes graze { 0% { transform: rotate(50deg); } 100% { transform: rotate(70deg); } } 
+
+        .standing-animal { position: absolute; bottom: 16vh; left: 55vw; width: 15px; height: 12px; z-index: 12; transform: scale(0.8); }
+        .st-body { width: 15px; height: 10px; border-radius: 8px; }
+        .st-head { width: 10px; height: 10px; border-radius: 50%; top: -6px; right: -4px; }
+        .st-ear { width: 4px; height: 6px; top: -10px; right: 0; border-radius: 2px; }
+        .st-tail { width: 4px; height: 12px; top: -2px; left: -2px; border-radius: 2px; transform-origin: bottom center; animation: wag 1s ease-in-out infinite alternate; }
+        .st-leg { width: 3px; height: 8px; top: 8px; border-radius: 2px; }
+        .st-l1 { left: 2px; } .st-l2 { right: 2px; }
+        @keyframes wag { 0% { transform: rotate(-15deg); } 100% { transform: rotate(15deg); } }
+
+        .standing-cow { position: absolute; bottom: 15vh; left: 15vw; width: 35px; height: 25px; z-index: 12; }
+        .cow-body { width: 30px; height: 16px; border-radius: 8px; top: 4px; }
+        .cow-head { width: 12px; height: 10px; border-radius: 4px; top: 0; right: -6px; }
+        .cow-leg { width: 4px; height: 10px; top: 16px; border-radius: 2px; }
+        .cow-l1 { left: 4px; } .cow-l2 { left: 10px; } .cow-l3 { right: 4px; } .cow-l4 { right: 10px; }
+
+        .standing-horse { position: absolute; bottom: 17vh; right: 25vw; width: 40px; height: 35px; z-index: 12; transform: scaleX(-1); }
+        .horse-body { width: 32px; height: 16px; border-radius: 10px; top: 10px; }
+        .horse-neck { width: 10px; height: 16px; top: 0; right: -2px; transform: rotate(30deg); }
+        .horse-head { width: 14px; height: 8px; top: -4px; right: -10px; border-radius: 4px; }
+        .horse-tail { width: 4px; height: 16px; top: 10px; left: -2px; transform: rotate(15deg); }
+        .horse-leg { width: 3px; height: 14px; top: 22px; }
+        .horse-l1 { left: 4px; } .horse-l2 { left: 10px; } .horse-l3 { right: 4px; } .horse-l4 { right: 10px; }
+
+        /* The cat is now nested INSIDE the house element in the HTML below! */
+        .cat { position: absolute; top: -33px; left: 18px; width: 8px; height: 12px; z-index: 12; }
+        .cat-body { width: 8px; height: 10px; border-radius: 4px 4px 2px 2px; bottom: 0;}
+        .cat-head { width: 10px; height: 8px; border-radius: 50%; top: -6px; left: -1px;}
+        .cat-ear-l { position: absolute; width: 0; height: 0; border-left: 3px solid transparent; border-right: 3px solid transparent; border-bottom: 5px solid var(--animal-color); top: -10px; left: 0; transition: border-bottom-color 2s;}
+        .cat-ear-r { position: absolute; width: 0; height: 0; border-left: 3px solid transparent; border-right: 3px solid transparent; border-bottom: 5px solid var(--animal-color); top: -10px; right: 0; transition: border-bottom-color 2s;}
+
+        .deer-container { position: absolute; bottom: 13vh; left: -100px; z-index: 12; animation: runDeer 18s linear infinite 4s; }
+        .deer { position: relative; width: 30px; height: 30px; animation: bound 0.6s infinite alternate cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .deer-body { width: 22px; height: 12px; border-radius: 10px; top: 8px; }
+        .deer-neck { width: 8px; height: 14px; top: 0px; right: -2px; border-radius: 5px; transform: rotate(30deg); }
+        .deer-head { width: 12px; height: 8px; border-radius: 50%; top: -3px; right: -8px; }
+        .deer-leg { width: 3px; height: 12px; top: 18px; border-radius: 2px; }
+        .leg-f1 { right: 2px; animation: legSwing 0.6s infinite alternate; transform-origin: top center; } .leg-f2 { right: 6px; animation: legSwing 0.6s infinite alternate-reverse; transform-origin: top center; }
+        .leg-b1 { left: 2px; animation: legSwing 0.6s infinite alternate-reverse; transform-origin: top center; } .leg-b2 { left: 6px; animation: legSwing 0.6s infinite alternate; transform-origin: top center; }
+        
+        @keyframes runDeer { 0% { transform: translateX(0); } 100% { transform: translateX(120vw); } }
+        @keyframes bound { 0% { transform: translateY(0); } 100% { transform: translateY(-12px); } }
+        @keyframes legSwing { 0% { transform: rotate(-30deg); } 100% { transform: rotate(30deg); } }
+
+        /* --- SWAYING TREES (Z: 12) --- */
+        .tree-container { position: absolute; bottom: 20vh; z-index: 12; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; }
+        .tree-trunk { width: 1vw; min-width: 6px; height: 20px; background: #331a00; position: absolute; bottom: 0; z-index: 1; }
+        .tree-leaves { transform-origin: bottom center; animation: windSway 4s ease-in-out infinite alternate; z-index: 2; transition: background 2s, border-bottom-color 2s; }
+        .pine .tree-leaves { width: 0; height: 0; margin-bottom: 15px; border-left: 2.5vw solid transparent; border-right: 2.5vw solid transparent; border-bottom: 90px solid var(--tree-color); }
+        @media (max-width: 768px) { .pine .tree-leaves { border-left-width: 20px; border-right-width: 20px; border-bottom-width: 70px; } }
+        .oak .tree-leaves { width: 6vw; min-width: 45px; height: 6vw; min-height: 45px; margin-bottom: 15px; background: var(--tree-color); border-radius: 50%; }
+
+        .tree-1 { left: 5%; transform: scale(1.1); } .tree-1 .tree-leaves { animation-delay: 0s; }
+        .tree-2 { left: 22%; transform: scale(0.7); } .tree-2 .tree-leaves { animation-delay: 1s; animation-duration: 5s; }
+        .tree-3 { left: 38%; transform: scale(0.9); } .tree-3 .tree-leaves { animation-delay: 0.5s; }
+        .tree-4 { right: 38%; transform: scale(1.2); } .tree-4 .tree-leaves { animation-delay: 2s; animation-duration: 4.5s; }
+        .tree-5 { right: 8%; transform: scale(0.9); } .tree-5 .tree-leaves { animation-delay: 1.5s; }
+        @keyframes windSway { 0% { transform: rotate(-4deg); } 100% { transform: rotate(5deg); } }
+
+        /* --- TRAIN TRACKS & TRAINS --- */
+        .track { position: absolute; left: 0; width: 100%; height: 8px; border-top: 2px solid #57606f; border-bottom: 2px solid #57606f; background: repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(17,17,17,0.8) 15px, rgba(17,17,17,0.8) 20px); }
+        .track-1 { bottom: 17vh; z-index: 13; } .track-2 { bottom: 13vh; z-index: 15; }
+
+        .train { position: absolute; width: 620px; height: 45px; display: flex; gap: 5px; }
+        .train-engine { width: 80px; height: 100%; background: #4a5568; border-radius: 5px 10px 0 0; position: relative; }
+        .train-engine::before { content: ''; position: absolute; top: 5px; right: 10px; width: 20px; height: 15px; background: #a4b0be; border-radius: 2px; }
+        
+        /* BOGIES TEXT PERFECTLY CENTERED */
+        .train-carriage { 
+            width: 100px; height: 100%; border-radius: 5px 5px 0 0; position: relative; border-bottom: 3px dashed #111; 
+            display: flex; justify-content: center; align-items: center; /* PERFECTLY CENTERED */
+            color: #ffffff; font-weight: 800; font-size: 13px; letter-spacing: 1px;
+        }
+        .train-carriage::after { content: ''; position: absolute; top: 5px; left: 10px; width: 80px; height: 6px; background: repeating-linear-gradient(90deg, rgba(164, 176, 190, 0.4), rgba(164, 176, 190, 0.4) 15px, transparent 15px, transparent 25px); }
+        
+        .headlight { position: absolute; opacity: 0; transition: opacity 0.5s; }
+        .headlight::after { content: ''; position: absolute; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.5s; pointer-events: none; }
+        
+        .train-headlight { right: -2px; bottom: 10px; width: 4px; height: 15px; background: #fff; border-radius: 5px; }
+        .train-headlight::after { left: 0; width: 150px; height: 50px; background: radial-gradient(ellipse at left, rgba(255,255,255,0.8) 0%, transparent 70%); }
+
+        .train-ltr { bottom: 17.5vh; left: -100vw; z-index: 14; flex-direction: row-reverse; animation: driveLTR 18s linear infinite; }
+        .train-ltr .train-carriage { background: #192a56; } 
+        
+        .train-rtl { bottom: 13.5vh; left: 100vw; z-index: 16; flex-direction: row; animation: driveRTL 24s linear infinite; }
+        .train-rtl .train-engine { transform: scaleX(-1); } .train-rtl .train-carriage { background: #c23616; } 
+
+        @keyframes driveLTR { 0% { transform: translateX(0); } 100% { transform: translateX(200vw); } }
+        @keyframes driveRTL { 0% { transform: translateX(0); } 100% { transform: translateX(-200vw); } }
+
+        /* --- ROAD & VEHICLES --- */
+        .road { position: absolute; bottom: 0; left: 0; width: 100%; height: 12vh; background: var(--road-color); border-top: 4px solid #111; z-index: 17; transition: background 2s; }
+        .road-lines { position: absolute; top: 50%; width: 100%; height: 4px; background: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255, 255, 255, 0.5) 40px, rgba(255, 255, 255, 0.5) 80px); transform: translateY(-50%); }
+        .wheel { position: absolute; bottom: 0; background: #2f3542; border-radius: 50%; border: 4px solid #111; }
+        
+        .vehicle-headlight { right: -2px; bottom: 12px; width: 4px; height: 10px; background: #fff; border-radius: 5px; }
+        .vehicle-headlight::after { left: 0; width: 100px; height: 40px; background: radial-gradient(ellipse at left, rgba(255,255,200,0.8) 0%, transparent 70%); }
+
+        .van { position: absolute; bottom: 6vh; left: 100vw; width: 110px; height: 45px; z-index: 18; animation: driveRoadRTL 14s linear infinite 2s; }
+        .van-body { position: absolute; bottom: 10px; width: 100%; height: 35px; background: #2ed573; border-radius: 5px 10px 5px 5px; }
+        .van-window { position: absolute; top: 5px; right: 5px; width: 25px; height: 15px; background: #a4b0be; border-radius: 0 5px 0 0; }
+        .van .wheel { width: 22px; height: 22px; border-width: 3px; } .van .wheel-1 { left: 15px; } .van .wheel-2 { right: 15px; }
+
+        .car-red { position: absolute; bottom: 6vh; left: 100vw; width: 90px; height: 30px; z-index: 18; animation: driveRoadRTL 8s linear infinite 6s; }
+        .car-red .car-body { position: absolute; bottom: 8px; width: 100%; height: 16px; background: #ff4757; border-radius: 5px 20px 5px 5px; }
+        .car-red .car-top { position: absolute; bottom: 24px; left: 25px; width: 40px; height: 12px; background: #ff4757; border-radius: 10px 15px 0 0; } .car-red .car-top::after { content: ''; position: absolute; top: 2px; left: 5px; width: 30px; height: 8px; background: #333; }
+        .car-red .wheel { width: 18px; height: 18px; border-width: 3px; } .car-red .wheel-1 { left: 10px; } .car-red .wheel-2 { right: 15px; } .car-red .vehicle-headlight { bottom: 10px; height: 6px; }
+
+        .truck { position: absolute; bottom: 2vh; left: -100vw; width: 160px; height: 65px; z-index: 19; animation: driveRoadLTR 15s linear infinite; }
+        .truck .cabin { position: absolute; right: 0; bottom: 12px; width: 50px; height: 45px; background: #ff4757; border-radius: 12px 12px 5px 0; } .truck .cabin-window { position: absolute; top: 6px; right: 6px; width: 18px; height: 18px; background: #a4b0be; border-radius: 3px; }
+        .truck .trailer { position: absolute; left: 0; bottom: 12px; width: 105px; height: 50px; background: #ced6e0; border-radius: 5px; border: 2px solid #747d8c; }
+        .truck .wheel { width: 26px; height: 26px; } .truck .wheel-1 { left: 12px; } .truck .wheel-2 { left: 60px; } .truck .wheel-3 { right: 8px; } .truck .vehicle-headlight { bottom: 15px; height: 12px; }
+
+        .car-blue { position: absolute; bottom: 2vh; left: -100vw; width: 90px; height: 35px; z-index: 19; animation: driveRoadLTR 10s linear infinite 5s; }
+        .car-blue .car-body { position: absolute; bottom: 8px; width: 100%; height: 20px; background: #1e90ff; border-radius: 5px 15px 5px 5px; } .car-blue .car-top { position: absolute; bottom: 28px; left: 15px; width: 50px; height: 15px; background: #1e90ff; border-radius: 10px 10px 0 0; } .car-blue .car-top::after { content: ''; position: absolute; top: 2px; left: 5px; width: 40px; height: 10px; background: #a4b0be; }
+        .car-blue .wheel { width: 20px; height: 20px; border-width: 3px; } .car-blue .wheel-1 { left: 10px; } .car-blue .wheel-2 { right: 15px; } .car-blue .vehicle-headlight { bottom: 12px; height: 8px; }
+
+        @keyframes driveRoadLTR { 0% { transform: translateX(0); } 100% { transform: translateX(200vw); } }
+        @keyframes driveRoadRTL { 0% { transform: translateX(0) scaleX(-1); } 100% { transform: translateX(-200vw) scaleX(-1); } }
+
+        /* --- STREET LIGHTS (Z: 20) --- */
+        .street-light { position: absolute; bottom: 11vh; width: 8px; height: 160px; background: #1a1a1a; z-index: 20; }
+        .street-light::before { content: ''; position: absolute; top: 0; left: -20px; width: 48px; height: 8px; background: #111; border-radius: 10px; }
+        .light-bulb { position: absolute; top: 8px; left: -12px; width: 32px; height: 15px; background: rgba(255,255,255,0.1); border-radius: 15px; transition: all 1s ease; }
+        .light-1 { left: 10%; } .light-2 { left: 35%; } .light-3 { right: 35%; } .light-4 { right: 10%; }
+
+        /* --- THEME / LIGHTS ON STATES --- */
+        .lights-on .light-bulb { background: #ffdb4d; box-shadow: 0 15px 50px 20px rgba(255, 219, 77, 0.7); }
+        .lights-on .headlight { opacity: 1; }
+        .lights-on .headlight::after { opacity: 1; }
+        .lights-on .house-window { background: #ffdb4d; box-shadow: 0 0 15px 5px rgba(255, 219, 77, 0.4); }
+        .lights-on .house { background: #111820; } .lights-on .house-roof { border-bottom-color: #0b1015; }
+        .lights-on .clouds { opacity: 0.15; } .lights-on #stars-container { opacity: 1; } .lights-on .skyline { opacity: 0.2; }
+
+        /* DYNAMIC THEMES */
+        .theme-morning { --tree-color: #1a3300; --ground-color: #336600; --hill-color: #264d00; --animal-color: #112200; background: linear-gradient(to top, #ff9a44, #fc6076); }
+        .theme-morning .sun { animation: rise 4s ease-out forwards; } .theme-morning .skyline { opacity: 0.4; } 
+
+        .theme-afternoon { --tree-color: #264d00; --ground-color: #408000; --hill-color: #336600; --animal-color: #1a3300; background: linear-gradient(to top, #56ccf2, #2f80ed); }
+        .theme-afternoon .sun { top: 15vh; } .theme-afternoon .skyline { opacity: 0.3; } 
+
+        .theme-evening-rain { --tree-color: #050a00; --ground-color: #0a1400; --hill-color: #081200; --road-color: #1a1a1a; --animal-color: #000; background: linear-gradient(to top, #373b44, #4286f4); }
+        .theme-evening-rain .sun { animation: setSun 4s ease-out forwards; } .theme-evening-rain .clouds { opacity: 0.9; filter: brightness(0.5); }
+        .rain-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.4) 70%, transparent); background-size: 4px 100px; animation: pour 0.6s linear infinite; z-index: 25; display: none; pointer-events: none; }
+        .theme-evening-rain .rain-overlay { display: block; } .theme-evening-rain #stars-container { display: none; }
+
+        .theme-evening-moon { --tree-color: #050a00; --ground-color: #0a1400; --hill-color: #081200; --road-color: #1a1a1a; --animal-color: #000; background: linear-gradient(to top, #141e30, #243b55); }
+        .theme-evening-moon .moon { animation: rise 4s ease-out forwards; }
+
+        .theme-night { --tree-color: #050a00; --ground-color: #0a1400; --hill-color: #081200; --road-color: #1a1a1a; --animal-color: #000; background: linear-gradient(to top, #0f2027, #203a43, #2c5364); }
+        .theme-night .moon { top: 15vh; }
+
+        @keyframes rise { 0% { top: 100vh; opacity: 0; } 100% { top: 15vh; opacity: 1; } }
+        @keyframes setSun { 0% { top: 15vh; opacity: 1; } 100% { top: 90vh; opacity: 0.1; } }
+        @keyframes pour { 0% { background-position: 0 0; } 100% { background-position: 10px 100vh; } }
+    </style>
 </head>
 <body>
 
-    <!-- Subtle Living Background -->
-    <canvas id="network-canvas"></canvas>
-
-    <!-- Floating Navigation -->
-    <nav id="navbar">
-        <div class="nav-brand">SJK.dev</div>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-
-    <main class="content-wrapper">
+    <div id="environment">
         
-        <!-- Hero Section -->
-        <section id="home" class="hero-section reveal">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <p class="availability">🟢 AVAILABLE FOR OPPORTUNITIES</p>
-                    <h1>Hi, I'm <span class="gradient-text">S Jaya Kumar</span><br>Full-Stack Developer.</h1>
-                    <p class="hero-desc">Ambitious BCA graduate crafting logic-driven, responsive web and mobile applications. Currently building secure systems and eager to leverage deep technical expertise in a dynamic environment.</p>
-                    <div class="hero-buttons">
-                        <a href="#contact" class="btn btn-primary">Contact Me</a>
-                        <a href="#" class="btn btn-secondary">⬇ Download Resume</a>
-                    </div>
-                </div>
-                <div class="hero-image-container">
-                    <div class="profile-glow-ring">
-                        <div class="profile-img-placeholder">SJK</div>
-                    </div>
+        <div id="stars-container"></div>
+        <div id="celestial" class="celestial-body"></div>
+        
+        <div id="birds-container">
+            <div class="bird-wrapper bird-1"><div class="bird"></div></div>
+            <div class="bird-wrapper bird-2"><div class="bird"></div></div>
+            <div class="bird-wrapper bird-3"><div class="bird"></div></div>
+            <div class="bird-wrapper bird-4"><div class="bird"></div></div>
+            <div class="bird-wrapper bird-5"><div class="bird"></div></div>
+            <div class="bird-wrapper bird-6"><div class="bird"></div></div>
+            <div class="bird-wrapper bird-7"><div class="bird"></div></div>
+        </div>
+
+        <div class="clouds">
+            <div class="cloud cloud-1"></div><div class="cloud cloud-2"></div><div class="cloud cloud-3"></div>
+        </div>
+
+        <div class="rain-overlay"></div>
+        <h1 id="greeting-text"></h1>
+
+        <div class="landscape" id="landscape">
+            <div class="skyline"></div>
+            <div class="hill hill-1"></div><div class="hill hill-2"></div><div class="hill hill-3"></div>
+            <div class="ground"></div>
+
+            <div class="house h1"><div class="house-roof"></div><div class="house-window window-1"></div><div class="house-window window-2"></div></div>
+            
+            <!-- FIXED: CAT IS NOW NESTED SAFELY ON THE ROOF -->
+            <div class="house h2">
+                <div class="house-roof"></div>
+                <div class="house-window window-1"></div>
+                <div class="cat">
+                    <div class="animal-part cat-body"></div><div class="animal-part cat-head"></div>
+                    <div class="cat-ear-l"></div><div class="cat-ear-r"></div>
                 </div>
             </div>
-        </section>
 
-        <!-- About & Education Section -->
-        <section id="about" class="about-section reveal">
-            <div class="about-grid">
-                <div class="about-text">
-                    <h2>Curious mind.<br><span class="gradient-text">Clean code.</span></h2>
-                    <p>I am a final-year BCA student at Bangalore University with a strong foundation in full-stack architecture. I thrive on conceptualizing and deploying secure mobile applications and data-driven scripts.</p>
-                </div>
-                <div class="education-card glass-card">
-                    <h3>🎓 Education</h3>
-                    <div class="timeline-item">
-                        <h4>Bachelor of Computer Applications (BCA)</h4>
-                        <p>Bangalore University | 2026</p>
-                    </div>
-                    <div class="timeline-item">
-                        <h4>CEBA (Computer Science)</h4>
-                        <p>12th (PUC) Karnataka State Board | 2023</p>
-                    </div>
+            <div class="house h3"><div class="house-roof"></div><div class="house-window window-1"></div><div class="house-window window-2"></div></div>
+
+            <div class="tree-container pine tree-1"><div class="tree-leaves"></div><div class="tree-trunk"></div></div>
+            <div class="tree-container oak tree-2"><div class="tree-leaves"></div><div class="tree-trunk"></div></div>
+            <div class="tree-container pine tree-3"><div class="tree-leaves"></div><div class="tree-trunk"></div></div>
+            <div class="tree-container oak tree-4"><div class="tree-leaves"></div><div class="tree-trunk"></div></div>
+            <div class="tree-container pine tree-5"><div class="tree-leaves"></div><div class="tree-trunk"></div></div>
+            
+            <!-- FIXED: ALL ANIMALS PERFECTLY ANCHORED IN GRASS -->
+            <div class="grazing-animal">
+                <div class="animal-part gz-body"></div><div class="animal-part gz-neck"><div class="animal-part gz-head"></div></div>
+                <div class="animal-part gz-leg gz-l1"></div><div class="animal-part gz-leg gz-l2"></div><div class="animal-part gz-leg gz-l3"></div><div class="animal-part gz-leg gz-l4"></div>
+            </div>
+
+            <div class="standing-animal">
+                <div class="animal-part st-body"></div><div class="animal-part st-head"><div class="animal-part st-ear"></div></div><div class="animal-part st-tail"></div>
+                <div class="animal-part st-leg st-l1"></div><div class="animal-part st-leg st-l2"></div>
+            </div>
+
+            <div class="standing-cow">
+                <div class="animal-part cow-body"></div><div class="animal-part cow-head"></div>
+                <div class="animal-part cow-leg cow-l1"></div><div class="animal-part cow-leg cow-l2"></div><div class="animal-part cow-leg cow-l3"></div><div class="animal-part cow-leg cow-l4"></div>
+            </div>
+
+            <div class="standing-horse">
+                <div class="animal-part horse-body"></div><div class="animal-part horse-neck"></div><div class="animal-part horse-head"></div><div class="animal-part horse-tail"></div>
+                <div class="animal-part horse-leg horse-l1"></div><div class="animal-part horse-leg horse-l2"></div><div class="animal-part horse-leg horse-l3"></div><div class="animal-part horse-leg horse-l4"></div>
+            </div>
+
+            <div class="deer-container">
+                <div class="deer">
+                    <div class="animal-part deer-head"></div><div class="animal-part deer-neck"></div><div class="animal-part deer-body"></div>
+                    <div class="animal-part deer-leg leg-f1"></div><div class="animal-part deer-leg leg-f2"></div><div class="animal-part deer-leg leg-b1"></div><div class="animal-part deer-leg leg-b2"></div>
                 </div>
             </div>
-        </section>
 
-        <!-- Skills Section -->
-        <section id="skills" class="skills-section reveal">
-            <h2>My <span class="gradient-text">Toolkit</span></h2>
-            <div class="skills-grid">
-                <div class="glass-card skill-category">
-                    <h3>Languages & Core</h3>
-                    <div class="skill-bar"><span class="skill-name">Python</span><div class="bar-bg"><div class="bar-fill" style="width: 90%;"></div></div></div>
-                    <div class="skill-bar"><span class="skill-name">Java</span><div class="bar-bg"><div class="bar-fill" style="width: 85%;"></div></div></div>
-                    <div class="skill-bar"><span class="skill-name">JavaScript</span><div class="bar-bg"><div class="bar-fill" style="width: 80%;"></div></div></div>
-                </div>
-                <div class="glass-card skill-category">
-                    <h3>Web & Databases</h3>
-                    <div class="skill-bar"><span class="skill-name">HTML5 / CSS3</span><div class="bar-bg"><div class="bar-fill" style="width: 95%;"></div></div></div>
-                    <div class="skill-bar"><span class="skill-name">PHP</span><div class="bar-bg"><div class="bar-fill" style="width: 75%;"></div></div></div>
-                    <div class="skill-bar"><span class="skill-name">MySQL</span><div class="bar-bg"><div class="bar-fill" style="width: 85%;"></div></div></div>
-                </div>
+            <div class="track track-1"></div>
+            
+            <div class="train train-ltr">
+                <div class="train-engine"><div class="headlight train-headlight"></div></div>
+                <div class="train-carriage">NODE</div>
+                <div class="train-carriage">REACT</div>
+                <div class="train-carriage">JS</div>
+                <div class="train-carriage">CSS</div>
+                <div class="train-carriage">HTML</div>
             </div>
-        </section>
+            
+            <div class="track track-2"></div>
+            
+            <div class="train train-rtl">
+                <div class="train-engine"><div class="headlight train-headlight"></div></div>
+                <div class="train-carriage">UI/UX</div>
+                <div class="train-carriage">GIT</div>
+                <div class="train-carriage">SQL</div>
+                <div class="train-carriage">API</div>
+                <div class="train-carriage">AWS</div>
+            </div>
 
-        <!-- Projects Section -->
-        <section id="projects" class="projects-section reveal">
-            <h2>Things I've <span class="gradient-text">Built</span></h2>
-            <div class="projects-grid">
+            <div class="street-light light-1"><div class="light-bulb"></div></div>
+            <div class="street-light light-2"><div class="light-bulb"></div></div>
+            <div class="street-light light-3"><div class="light-bulb"></div></div>
+            <div class="street-light light-4"><div class="light-bulb"></div></div>
+
+            <div class="road">
+                <div class="road-lines"></div>
                 
-                <div class="glass-card project-card">
-                    <div class="project-header">
-                        <h3>Raksha-Suraksha</h3>
-                        <span class="project-year">2026</span>
-                    </div>
-                    <p>Designed a robust mobile security application focused on device anti-theft and personal safety protocols. Engineered automated inactivity SOS triggers for emergency response.</p>
-                    <div class="project-tags">
-                        <span>Mobile Arch</span><span>Security</span><span>PHP</span>
-                    </div>
+                <div class="van">
+                    <div class="van-body"><div class="van-window"></div></div><div class="wheel wheel-1"></div><div class="wheel wheel-2"></div><div class="headlight vehicle-headlight"></div>
+                </div>
+                <div class="car-red">
+                    <div class="car-top"></div><div class="car-body"></div><div class="wheel wheel-1"></div><div class="wheel wheel-2"></div><div class="headlight vehicle-headlight"></div>
                 </div>
 
-                <div class="glass-card project-card">
-                    <div class="project-header">
-                        <h3>Jarvis Voice Assistant</h3>
-                        <span class="project-year">2025-2026</span>
-                    </div>
-                    <p>Developed a character-themed, voice-automated AI chat system integrating real-time scanning functionalities.</p>
-                    <div class="project-tags">
-                        <span>Java</span><span>XML</span><span>APIs</span>
-                    </div>
+                <div class="truck">
+                    <div class="trailer"></div><div class="cabin"><div class="cabin-window"></div></div><div class="wheel wheel-1"></div><div class="wheel wheel-2"></div><div class="wheel wheel-3"></div><div class="headlight vehicle-headlight"></div>
                 </div>
-
-                <div class="glass-card project-card">
-                    <div class="project-header">
-                        <h3>Weather Forecasting App</h3>
-                        <span class="project-year">2025</span>
-                    </div>
-                    <p>Built a dynamic application utilizing RESTful APIs to parse and display real-time meteorological data.</p>
-                    <div class="project-tags">
-                        <span>REST APIs</span><span>JavaScript</span>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="contact-section reveal">
-            <div class="contact-grid">
-                <div class="contact-text">
-                    <h2>Let's build something <span class="gradient-text">great</span></h2>
-                    <p>Have a project in mind, or just want to connect? Drop me a message.</p>
-                    <p class="contact-info">📧 kumarsjaya141@gmail.com</p>
-                    <p class="contact-info">📍 Nelamangala, Bangalore</p>
-                </div>
-                <div class="glass-card contact-form">
-                    <input type="text" placeholder="Your Name" class="form-input">
-                    <input type="email" placeholder="Email Address" class="form-input">
-                    <textarea placeholder="Your Message" rows="4" class="form-input"></textarea>
-                    <button class="btn btn-primary" style="width: 100%;">Send Message 🚀</button>
+                <div class="car-blue">
+                    <div class="car-top"></div><div class="car-body"></div><div class="wheel wheel-1"></div><div class="wheel wheel-2"></div><div class="headlight vehicle-headlight"></div>
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
 
-    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const environment = document.getElementById("environment");
+            const landscape = document.getElementById("landscape");
+            const greetingText = document.getElementById("greeting-text");
+            const celestial = document.getElementById("celestial");
+            const starsContainer = document.getElementById("stars-container");
 
-    <script src="js/script.js"></script>
+            for (let i = 0; i < 40; i++) {
+                let star = document.createElement("div");
+                star.classList.add("star");
+                star.style.width = Math.random() * 3 + 1 + "px";
+                star.style.height = star.style.width;
+                star.style.top = Math.random() * 100 + "%";
+                star.style.left = Math.random() * 100 + "%";
+                star.style.animationDelay = Math.random() * 2 + "s";
+                starsContainer.appendChild(star);
+            }
+
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const timeNum = hours + (minutes / 60);
+
+            let greeting = "";
+            let themeClass = "";
+            let celestialType = "";
+            let needsLights = false;
+
+            if (timeNum >= 5.0 && timeNum < 12.0) {
+                greeting = "Good morning"; themeClass = "theme-morning"; celestialType = "sun";
+            } else if (timeNum >= 12.0 && timeNum < 16.0) {
+                greeting = "Good afternoon"; themeClass = "theme-afternoon"; celestialType = "sun";
+            } else if (timeNum >= 16.0 && timeNum < 18.75) {
+                greeting = "Good evening"; themeClass = "theme-evening-rain"; celestialType = "sun"; needsLights = true;
+            } else if (timeNum >= 18.75 && timeNum < 23.0) {
+                greeting = "Good evening"; themeClass = "theme-evening-moon"; celestialType = "moon"; needsLights = true;
+            } else {
+                greeting = "Good night"; themeClass = "theme-night"; celestialType = "moon"; needsLights = true;
+            }
+
+            environment.classList.add(themeClass);
+            celestial.classList.add(celestialType);
+            greetingText.innerHTML = `${greeting}<br>SIR/MA'AM`;
+            
+            if(needsLights) { landscape.classList.add('lights-on'); }
+        });
+    </script>
 </body>
 </html>
