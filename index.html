@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jack | Time-Based Environment Intro</title>
+    <title>Jack | Portfolio Intro</title>
     <style>
         * {
             margin: 0;
@@ -20,230 +20,220 @@
             --animal-color: #050a00; 
         }
 
-        body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000; }
+        body, html { 
+            width: 100%; 
+            height: 100vh;
+            height: 100dvh; 
+            overflow: hidden; 
+            background-color: #000; 
+        }
 
         #environment {
-            position: relative; width: 100vw; height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; transition: background 2s ease-in-out; z-index: 1; overflow: hidden;
+            position: relative; 
+            width: 100vw; 
+            height: 100vh;
+            height: 100dvh; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            transition: background 2s ease-in-out; 
+            z-index: 1; 
+            overflow: hidden;
         }
 
         #greeting-text {
-            font-size: clamp(2rem, 6vw, 4.5rem); color: #ffffff; text-align: center; text-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
-            z-index: 30; opacity: 0; animation: fadeInText 3s ease-in-out forwards; animation-delay: 1s;
-            margin-bottom: 15vh; /* Keeps text safely above the landscape */
+            font-size: clamp(1.8rem, 5vw, 3.8rem); 
+            color: #ffffff; 
+            text-align: center; 
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+            z-index: 30; 
+            opacity: 0; 
+            animation: fadeInText 3s ease-in-out forwards; 
+            animation-delay: 0.8s;
+            margin-bottom: 20vh;
         }
         @keyframes fadeInText { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
 
         /* Celestial Bodies */
         .celestial-body { position: absolute; border-radius: 50%; z-index: 2; left: 50%; transform: translateX(-50%); }
-        .sun { width: clamp(80px, 15vw, 150px); height: clamp(80px, 15vw, 150px); background: radial-gradient(circle, #ffd700, #ff8c00); box-shadow: 0 0 60px #ff8c00; }
-        .moon { width: clamp(60px, 12vw, 120px); height: clamp(60px, 12vw, 120px); background: radial-gradient(circle, #f4f6f0, #c8c8c8); box-shadow: 0 0 30px #ffffff, inset -15px -15px 0 rgba(0,0,0,0.2); }
+        .sun { width: 110px; height: 110px; background: radial-gradient(circle, #ffd700, #ff8c00); box-shadow: 0 0 50px #ff8c00; }
+        .moon { width: 90px; height: 90px; background: radial-gradient(circle, #f4f6f0, #c8c8c8); box-shadow: 0 0 30px #ffffff, inset -12px -12px 0 rgba(0,0,0,0.2); }
 
         /* Stars */
-        #stars-container { position: absolute; top: 0; left: 0; width: 100%; height: 70%; z-index: 1; opacity: 0; transition: opacity 2s ease-in-out; }
-        .star { position: absolute; background: white; border-radius: 50%; box-shadow: 0 0 5px white; animation: twinkle 3s infinite alternate; }
+        #stars-container { position: absolute; top: 0; left: 0; width: 100%; height: 65%; z-index: 1; opacity: 0; transition: opacity 2s ease-in-out; }
+        .star { position: absolute; background: white; border-radius: 50%; box-shadow: 0 0 4px white; animation: twinkle 3s infinite alternate; }
         @keyframes twinkle { 0% { opacity: 0.3; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
 
-        /* --- BIRDS (TOP OF SCREEN) --- */
-        #birds-container { position: absolute; top: 5%; left: 0; width: 100%; height: 35vh; z-index: 3; pointer-events: none; }
-        .bird-wrapper { position: absolute; width: 30px; height: 15px; left: -20vw; animation: flyAcross var(--speed) linear infinite var(--delay); }
+        /* --- BIRDS --- */
+        #birds-container { position: absolute; top: 8%; left: 0; width: 100%; height: 30vh; z-index: 3; pointer-events: none; }
+        .bird-wrapper { position: absolute; width: 26px; height: 12px; left: -20vw; animation: flyAcross var(--speed) linear infinite var(--delay); }
         .bird { position: relative; width: 100%; height: 100%; animation: swoop var(--swoop-speed) ease-in-out infinite alternate; }
-        .bird::before, .bird::after { content: ''; position: absolute; top: 5px; width: 16px; height: 3px; background: var(--animal-color); border-radius: 3px; transition: background 2s; }
+        .bird::before, .bird::after { content: ''; position: absolute; top: 4px; width: 14px; height: 3px; background: var(--animal-color); border-radius: 3px; transition: background 2s; }
         .bird::before { left: 0; transform-origin: right center; animation: flapRight var(--flap-speed) infinite alternate ease-in-out; }
         .bird::after { right: 0; transform-origin: left center; animation: flapLeft var(--flap-speed) infinite alternate ease-in-out; }
         
-        @keyframes flapRight { 0% { transform: rotate(25deg); } 100% { transform: rotate(-35deg); } }
-        @keyframes flapLeft { 0% { transform: rotate(-25deg); } 100% { transform: rotate(35deg); } }
+        @keyframes flapRight { 0% { transform: rotate(20deg); } 100% { transform: rotate(-30deg); } }
+        @keyframes flapLeft { 0% { transform: rotate(-20deg); } 100% { transform: rotate(30deg); } }
         @keyframes flyAcross { from { transform: translateX(0) scale(var(--scale)); } to { transform: translateX(140vw) scale(var(--scale)); } }
-        @keyframes swoop { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(20px); } }
+        @keyframes swoop { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(18px); } }
 
-        .bird-1 { top: 15%; --scale: 1; --speed: 25s; --delay: 0s; --swoop-speed: 3s; --flap-speed: 0.4s; }
-        .bird-2 { top: 35%; --scale: 0.8; --speed: 35s; --delay: 5s; --swoop-speed: 4s; --flap-speed: 0.3s; }
-        .bird-3 { top: 25%; --scale: 1.2; --speed: 20s; --delay: 2s; --swoop-speed: 2.5s; --flap-speed: 0.5s; }
-        .bird-4 { top: 50%; --scale: 0.9; --speed: 28s; --delay: 12s; --swoop-speed: 3.5s; --flap-speed: 0.35s; }
+        .bird-1 { top: 10%; --scale: 1; --speed: 24s; --delay: 0s; --swoop-speed: 3s; --flap-speed: 0.35s; }
+        .bird-2 { top: 30%; --scale: 0.8; --speed: 32s; --delay: 4s; --swoop-speed: 4s; --flap-speed: 0.3s; }
+        .bird-3 { top: 20%; --scale: 1.1; --speed: 20s; --delay: 2s; --swoop-speed: 2.5s; --flap-speed: 0.4s; }
 
         /* Clouds */
-        .clouds { position: absolute; top: 10%; width: 100%; height: 200px; z-index: 4; opacity: 0.7; }
+        .clouds { position: absolute; top: 10%; width: 100%; height: 180px; z-index: 4; opacity: 0.7; }
         .cloud { position: absolute; background: #fff; border-radius: 50px; animation: floatCloud linear infinite; }
         .cloud::before, .cloud::after { content: ''; position: absolute; background: #fff; border-radius: 50%; }
-        .cloud-1 { width: 140px; height: 50px; top: 10vh; left: -200px; animation-duration: 35s; } .cloud-1::before { width: 70px; height: 70px; top: -35px; left: 20px; } .cloud-1::after { width: 60px; height: 60px; top: -25px; left: 70px; }
-        .cloud-2 { width: 100px; height: 35px; top: 25vh; left: -100px; animation-duration: 45s; animation-delay: 10s; transform: scale(0.8); opacity: 0.5; } .cloud-2::before { width: 50px; height: 50px; top: -25px; left: 10px; } .cloud-2::after { width: 40px; height: 40px; top: -15px; left: 45px; }
-        @keyframes floatCloud { from { transform: translateX(-250px); } to { transform: translateX(120vw); } }
+        .cloud-1 { width: 130px; height: 45px; top: 8vh; left: -180px; animation-duration: 35s; } .cloud-1::before { width: 60px; height: 60px; top: -28px; left: 18px; } .cloud-1::after { width: 50px; height: 50px; top: -20px; left: 60px; }
+        .cloud-2 { width: 95px; height: 32px; top: 22vh; left: -100px; animation-duration: 42s; animation-delay: 8s; transform: scale(0.8); opacity: 0.5; } .cloud-2::before { width: 45px; height: 45px; top: -22px; left: 10px; } .cloud-2::after { width: 35px; height: 35px; top: -14px; left: 40px; }
+        @keyframes floatCloud { from { transform: translateX(-200px); } to { transform: translateX(120vw); } }
 
-        /* --- BULLETPROOF LANDSCAPE (FIXED PIXELS) --- */
-        .landscape { position: absolute; bottom: 0; left: 0; width: 100%; height: 300px; z-index: 10; }
+        /* --- BULLETPROOF LANDSCAPE --- */
+        .landscape { position: absolute; bottom: 0; left: 0; width: 100%; height: 260px; z-index: 10; }
         
-        .skyline { position: absolute; bottom: 140px; left: 0; width: 100%; height: 120px; background: repeating-linear-gradient(90deg, transparent 0, transparent 2vw, #0b162c 2vw, #0b162c 4vw, transparent 4vw, transparent 5vw, #111c33 5vw, #111c33 9vw, transparent 9vw, transparent 11vw, #091122 11vw, #091122 13vw); opacity: 0.5; z-index: 8; transition: all 2s; }
+        /* FIXED: Skyline repeat-x prevents vertical stripe artifacts */
+        .skyline { 
+            position: absolute; 
+            bottom: 125px; 
+            left: 0; 
+            width: 100%; 
+            height: 90px; 
+            background: repeating-linear-gradient(90deg, transparent, transparent 15px, #0b162c 15px, #0b162c 35px, transparent 35px, transparent 45px, #111c33 45px, #111c33 80px); 
+            background-repeat: repeat-x;
+            background-size: 100% 100%;
+            opacity: 0.4; 
+            z-index: 8; 
+            transition: opacity 2s; 
+        }
         
         /* Hills */
-        .hill { position: absolute; bottom: 130px; background: var(--hill-color); border-radius: 50% 50% 0 0; transition: background 2s; z-index: 9; }
-        .hill-1 { width: 60vw; height: 100px; left: -10vw; z-index: 11; } .hill-2 { width: 70vw; height: 130px; right: -15vw; z-index: 10; } .hill-3 { width: 40vw; height: 80px; left: 35vw; bottom: 150px; z-index: 9; }
+        .hill { position: absolute; bottom: 110px; background: var(--hill-color); border-radius: 50% 50% 0 0; transition: background 2s; z-index: 9; }
+        .hill-1 { width: 60vw; height: 90px; left: -10vw; z-index: 11; } .hill-2 { width: 70vw; height: 115px; right: -15vw; z-index: 10; }
         
         /* Ground */
-        .ground { position: absolute; bottom: 80px; left: 0; width: 100%; height: 60px; background: var(--ground-color); border-top: 2px solid #264d00; z-index: 11; transition: background 2s, border-color 2s; }
+        .ground { position: absolute; bottom: 65px; left: 0; width: 100%; height: 55px; background: var(--ground-color); border-top: 2px solid #264d00; z-index: 11; transition: background 2s, border-color 2s; }
 
         /* Houses */
         .house { position: absolute; background: #2c3e50; z-index: 11; transition: background 2s; }
         .house-roof { position: absolute; width: 0; height: 0; border-left-color: transparent; border-right-color: transparent; border-style: solid; transition: border-bottom-color 2s; }
         .house-window { position: absolute; background: #7f8c8d; border-radius: 2px; transition: all 1s; }
         
-        .h1 { bottom: 160px; right: 15vw; width: 55px; height: 40px; } .h1 .house-roof { top: -25px; left: -8px; border-width: 0 35px 25px 35px; border-bottom-color: #1a252f; } .h1 .window-1 { top: 12px; left: 10px; width: 12px; height: 15px; } .h1 .window-2 { top: 12px; right: 10px; width: 12px; height: 15px; }
-        .h2 { bottom: 150px; left: 20vw; width: 40px; height: 30px; } .h2 .house-roof { top: -20px; left: -5px; border-width: 0 25px 20px 25px; border-bottom-color: #1a252f; } .h2 .window-1 { top: 8px; left: 14px; width: 12px; height: 12px; }
-        .h3 { bottom: 170px; left: 45vw; width: 35px; height: 50px; } .h3 .house-roof { top: -15px; left: -5px; border-width: 0 22px 15px 22px; border-bottom-color: #151e27; } .h3 .window-1 { top: 10px; left: 10px; width: 10px; height: 10px; } .h3 .window-2 { top: 25px; left: 10px; width: 10px; height: 10px; }
+        .h1 { bottom: 135px; right: 15vw; width: 50px; height: 35px; } .h1 .house-roof { top: -22px; left: -6px; border-width: 0 31px 22px 31px; border-bottom-color: #1a252f; } .h1 .window-1 { top: 10px; left: 8px; width: 10px; height: 12px; } .h1 .window-2 { top: 10px; right: 8px; width: 10px; height: 12px; }
+        .h2 { bottom: 125px; left: 18vw; width: 38px; height: 28px; } .h2 .house-roof { top: -18px; left: -4px; border-width: 0 23px 18px 23px; border-bottom-color: #1a252f; } .h2 .window-1 { top: 7px; left: 13px; width: 10px; height: 10px; }
 
-        /* Cat anchored on Roof 2 */
-        .cat { position: absolute; top: -25px; left: 14px; width: 6px; height: 10px; z-index: 12; }
-        .cat-body { width: 6px; height: 8px; border-radius: 3px 3px 1px 1px; bottom: 0; position: absolute; background: var(--animal-color); transition: background 2s;}
-        .cat-head { width: 8px; height: 6px; border-radius: 50%; top: -4px; left: -1px; position: absolute; background: var(--animal-color); transition: background 2s;}
+        .cat { position: absolute; top: -22px; left: 12px; width: 6px; height: 9px; z-index: 12; }
+        .cat-body { width: 6px; height: 7px; border-radius: 3px 3px 1px 1px; bottom: 0; position: absolute; background: var(--animal-color); transition: background 2s;}
+        .cat-head { width: 7px; height: 5px; border-radius: 50%; top: -3px; left: -0.5px; position: absolute; background: var(--animal-color); transition: background 2s;}
 
-        /* --- ANIMALS --- */
+        /* Animals */
         .animal-part { position: absolute; background: var(--animal-color); transition: background 2s; }
-        
-        .grazing-animal { position: absolute; bottom: 140px; left: 35vw; width: 25px; height: 15px; z-index: 12; }
-        .gz-body { width: 22px; height: 12px; border-radius: 10px; }
-        .gz-neck { width: 6px; height: 14px; top: 5px; right: -4px; border-radius: 5px; transform-origin: top left; animation: graze 4s ease-in-out infinite alternate; }
-        .gz-head { width: 10px; height: 6px; border-radius: 50%; bottom: -2px; right: -4px; }
-        .gz-leg { width: 3px; height: 10px; top: 10px; border-radius: 2px; }
-        .gz-l1 { left: 4px; } .gz-l2 { left: 8px; } .gz-l3 { right: 4px; } .gz-l4 { right: 8px; }
-        @keyframes graze { 0% { transform: rotate(50deg); } 100% { transform: rotate(70deg); } } 
+        .standing-cow { position: absolute; bottom: 118px; left: 10vw; width: 28px; height: 18px; z-index: 12; }
+        .cow-body { width: 24px; height: 12px; border-radius: 5px; top: 3px; }
+        .cow-head { width: 9px; height: 7px; border-radius: 2px; top: 0; right: -3px; }
+        .cow-leg { width: 2.5px; height: 7px; top: 12px; border-radius: 1px; }
+        .cow-l1 { left: 3px; } .cow-l2 { left: 8px; } .cow-l3 { right: 3px; } .cow-l4 { right: 8px; }
 
-        .standing-animal { position: absolute; bottom: 150px; left: 55vw; width: 15px; height: 12px; z-index: 12; }
-        .st-body { width: 15px; height: 10px; border-radius: 8px; }
-        .st-head { width: 10px; height: 10px; border-radius: 50%; top: -6px; right: -4px; }
-        .st-ear { width: 4px; height: 6px; top: -10px; right: 0; border-radius: 2px; }
-        .st-tail { width: 4px; height: 12px; top: -2px; left: -2px; border-radius: 2px; transform-origin: bottom center; animation: wag 1s ease-in-out infinite alternate; }
-        .st-leg { width: 3px; height: 8px; top: 8px; border-radius: 2px; }
-        .st-l1 { left: 2px; } .st-l2 { right: 2px; }
-        @keyframes wag { 0% { transform: rotate(-15deg); } 100% { transform: rotate(15deg); } }
-
-        .standing-cow { position: absolute; bottom: 135px; left: 12vw; width: 30px; height: 20px; z-index: 12; }
-        .cow-body { width: 26px; height: 14px; border-radius: 6px; top: 3px; }
-        .cow-head { width: 10px; height: 8px; border-radius: 3px; top: 0; right: -4px; }
-        .cow-leg { width: 3px; height: 8px; top: 14px; border-radius: 2px; }
-        .cow-l1 { left: 4px; } .cow-l2 { left: 9px; } .cow-l3 { right: 4px; } .cow-l4 { right: 9px; }
-
-        .standing-horse { position: absolute; bottom: 145px; right: 25vw; width: 35px; height: 30px; z-index: 12; transform: scaleX(-1); }
-        .horse-body { width: 28px; height: 14px; border-radius: 8px; top: 8px; }
-        .horse-neck { width: 8px; height: 14px; top: 0; right: -2px; transform: rotate(30deg); }
-        .horse-head { width: 12px; height: 6px; top: -3px; right: -8px; border-radius: 3px; }
-        .horse-leg { width: 3px; height: 12px; top: 18px; }
-        .horse-l1 { left: 4px; } .horse-l2 { left: 10px; } .horse-l3 { right: 4px; } .horse-l4 { right: 10px; }
-
-        .deer-container { position: absolute; bottom: 135px; left: -100px; z-index: 12; animation: runDeer 18s linear infinite 4s; }
-        .deer { position: relative; width: 30px; height: 30px; animation: bound 0.6s infinite alternate cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-        .deer-body { width: 22px; height: 12px; border-radius: 10px; top: 8px; }
-        .deer-neck { width: 8px; height: 14px; top: 0px; right: -2px; border-radius: 5px; transform: rotate(30deg); }
-        .deer-head { width: 12px; height: 8px; border-radius: 50%; top: -3px; right: -8px; }
-        .deer-leg { width: 3px; height: 12px; top: 18px; border-radius: 2px; }
-        .leg-f1 { right: 2px; animation: legSwing 0.6s infinite alternate; transform-origin: top center; } .leg-f2 { right: 6px; animation: legSwing 0.6s infinite alternate-reverse; transform-origin: top center; }
-        .leg-b1 { left: 2px; animation: legSwing 0.6s infinite alternate-reverse; transform-origin: top center; } .leg-b2 { left: 6px; animation: legSwing 0.6s infinite alternate; transform-origin: top center; }
-        
-        @keyframes runDeer { 0% { transform: translateX(0); } 100% { transform: translateX(120vw); } }
-        @keyframes bound { 0% { transform: translateY(0); } 100% { transform: translateY(-12px); } }
-        @keyframes legSwing { 0% { transform: rotate(-30deg); } 100% { transform: rotate(30deg); } }
-
-        /* --- SWAYING TREES --- */
-        .tree-container { position: absolute; bottom: 140px; z-index: 12; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; transform-origin: bottom center; }
-        .tree-trunk { width: 8px; height: 20px; background: #331a00; position: absolute; bottom: 0; z-index: 1; }
-        .tree-leaves { transform-origin: bottom center; animation: windSway 4s ease-in-out infinite alternate; z-index: 2; transition: background 2s, border-bottom-color 2s; }
-        .pine .tree-leaves { width: 0; height: 0; margin-bottom: 15px; border-left: 20px solid transparent; border-right: 20px solid transparent; border-bottom: 70px solid var(--tree-color); }
-        .oak .tree-leaves { width: 50px; height: 50px; margin-bottom: 15px; background: var(--tree-color); border-radius: 50%; }
-
-        .tree-1 { left: 5%; transform: scale(1.1); } .tree-1 .tree-leaves { animation-delay: 0s; }
-        .tree-2 { left: 22%; transform: scale(0.7); } .tree-2 .tree-leaves { animation-delay: 1s; animation-duration: 5s; }
-        .tree-3 { left: 38%; transform: scale(0.9); } .tree-3 .tree-leaves { animation-delay: 0.5s; }
-        .tree-4 { right: 38%; transform: scale(1.2); } .tree-4 .tree-leaves { animation-delay: 2s; animation-duration: 4.5s; }
-        .tree-5 { right: 8%; transform: scale(0.9); } .tree-5 .tree-leaves { animation-delay: 1.5s; }
-        @keyframes windSway { 0% { transform: rotate(-4deg); } 100% { transform: rotate(5deg); } }
+        .standing-horse { position: absolute; bottom: 124px; right: 22vw; width: 32px; height: 26px; z-index: 12; transform: scaleX(-1); }
+        .horse-body { width: 25px; height: 12px; border-radius: 6px; top: 7px; }
+        .horse-neck { width: 7px; height: 12px; top: 0; right: -2px; transform: rotate(30deg); }
+        .horse-head { width: 10px; height: 5px; top: -3px; right: -7px; border-radius: 2px; }
+        .horse-leg { width: 2.5px; height: 10px; top: 16px; }
+        .horse-l1 { left: 3px; } .horse-l2 { left: 8px; } .horse-l3 { right: 3px; } .horse-l4 { right: 8px; }
 
         /* --- TRAIN TRACKS & TRAINS --- */
-        .track { position: absolute; left: 0; width: 100%; height: 6px; border-top: 2px solid #57606f; border-bottom: 2px solid #57606f; background: repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(17,17,17,0.8) 15px, rgba(17,17,17,0.8) 20px); }
-        
-        .track-1 { bottom: 120px; z-index: 13; } 
-        .track-2 { bottom: 90px; z-index: 15; }
+        .track { position: absolute; left: 0; width: 100%; height: 5px; border-top: 1.5px solid #57606f; border-bottom: 1.5px solid #57606f; background: repeating-linear-gradient(90deg, transparent, transparent 12px, rgba(17,17,17,0.8) 12px, rgba(17,17,17,0.8) 16px); }
+        .track-1 { bottom: 102px; z-index: 13; } 
+        .track-2 { bottom: 74px; z-index: 15; }
 
-        .train { position: absolute; width: 550px; height: 38px; display: flex; gap: 4px; flex-direction: row; }
+        .train { position: absolute; width: 480px; height: 32px; display: flex; gap: 4px; flex-direction: row; }
         
         .train-carriage { 
-            width: 85px; height: 100%; border-radius: 4px 4px 0 0; position: relative; border-bottom: 2px dashed #111; 
-            display: flex; justify-content: center; align-items: center; color: #ffffff; font-weight: bold; font-size: 11px; letter-spacing: 0.5px;
+            width: 75px; 
+            height: 100%; 
+            border-radius: 4px 4px 0 0; 
+            position: relative; 
+            border-bottom: 2px dashed #111; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            color: #ffffff; 
+            font-weight: 800; 
+            font-size: 10.5px; 
+            letter-spacing: 0.5px;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);
         }
-        .train-carriage::after { content: ''; position: absolute; top: 4px; left: 8px; width: 70px; height: 5px; background: repeating-linear-gradient(90deg, rgba(164, 176, 190, 0.4), rgba(164, 176, 190, 0.4) 12px, transparent 12px, transparent 20px); }
+        .train-carriage::after { content: ''; position: absolute; top: 3px; left: 6px; width: 63px; height: 4px; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3) 10px, transparent 10px, transparent 18px); }
         
         .headlight { position: absolute; opacity: 0; transition: opacity 0.5s; }
         .headlight::after { content: ''; position: absolute; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.5s; pointer-events: none; }
         
         /* Engine Face Right (LTR Train) */
-        .engine-right { width: 70px; height: 100%; background: #4a5568; border-radius: 4px 8px 0 0; position: relative; }
-        .engine-right::before { content: ''; position: absolute; top: 4px; right: 8px; width: 16px; height: 12px; background: #a4b0be; border-radius: 2px; }
-        .train-headlight-right { right: -2px; bottom: 8px; width: 4px; height: 12px; background: #fff; border-radius: 4px; }
-        .train-headlight-right::after { left: 0; width: 120px; height: 40px; background: radial-gradient(ellipse at left, rgba(255,255,255,0.8) 0%, transparent 70%); }
+        .engine-right { width: 60px; height: 100%; background: #4a5568; border-radius: 4px 7px 0 0; position: relative; }
+        .engine-right::before { content: ''; position: absolute; top: 4px; right: 6px; width: 14px; height: 10px; background: #a4b0be; border-radius: 2px; }
+        .train-headlight-right { right: -2px; bottom: 6px; width: 3px; height: 10px; background: #fff; border-radius: 3px; }
+        .train-headlight-right::after { left: 0; width: 100px; height: 32px; background: radial-gradient(ellipse at left, rgba(255,255,255,0.85) 0%, transparent 70%); }
 
         /* Engine Face Left (RTL Train) */
-        .engine-left { width: 70px; height: 100%; background: #4a5568; border-radius: 8px 4px 0 0; position: relative; }
-        .engine-left::before { content: ''; position: absolute; top: 4px; left: 8px; width: 16px; height: 12px; background: #a4b0be; border-radius: 2px; }
-        .train-headlight-left { left: -2px; bottom: 8px; width: 4px; height: 12px; background: #fff; border-radius: 4px; }
-        .train-headlight-left::after { right: 0; width: 120px; height: 40px; background: radial-gradient(ellipse at right, rgba(255,255,255,0.8) 0%, transparent 70%); }
+        .engine-left { width: 60px; height: 100%; background: #4a5568; border-radius: 7px 4px 0 0; position: relative; }
+        .engine-left::before { content: ''; position: absolute; top: 4px; left: 6px; width: 14px; height: 10px; background: #a4b0be; border-radius: 2px; }
+        .train-headlight-left { left: -2px; bottom: 6px; width: 3px; height: 10px; background: #fff; border-radius: 3px; }
+        .train-headlight-left::after { right: 0; width: 100px; height: 32px; background: radial-gradient(ellipse at right, rgba(255,255,255,0.85) 0%, transparent 70%); }
 
-        /* LTR Train Setup (Engine placed last in HTML) */
-        .train-ltr { bottom: 123px; left: -100vw; z-index: 14; animation: driveLTR 18s linear infinite; }
-        .train-ltr .train-carriage { background: #192a56; } 
+        /* LTR Train (Back) */
+        .train-ltr { bottom: 105px; left: -100vw; z-index: 14; animation: driveLTR 18s linear infinite; }
+        .train-ltr .train-carriage { background: #1e3a8a; } 
         
-        /* RTL Train Setup (Engine placed first in HTML) */
-        .train-rtl { bottom: 93px; left: 100vw; z-index: 16; animation: driveRTL 24s linear infinite; }
-        .train-rtl .train-carriage { background: #c23616; } 
+        /* RTL Train (Front) */
+        .train-rtl { bottom: 77px; left: 100vw; z-index: 16; animation: driveRTL 22s linear infinite; }
+        .train-rtl .train-carriage { background: #b91c1c; } 
 
         @keyframes driveLTR { 0% { transform: translateX(0); } 100% { transform: translateX(200vw); } }
         @keyframes driveRTL { 0% { transform: translateX(0); } 100% { transform: translateX(-200vw); } }
 
         /* --- ROAD & VEHICLES --- */
-        .road { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: var(--road-color); border-top: 3px solid #111; z-index: 17; transition: background 2s; }
-        .road-lines { position: absolute; top: 50%; width: 100%; height: 3px; background: repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(255, 255, 255, 0.5) 30px, rgba(255, 255, 255, 0.5) 60px); transform: translateY(-50%); }
-        .wheel { position: absolute; bottom: 0; background: #2f3542; border-radius: 50%; border: 3px solid #111; }
+        .road { position: absolute; bottom: 0; left: 0; width: 100%; height: 65px; background: var(--road-color); border-top: 3px solid #111; z-index: 17; transition: background 2s; }
+        .road-lines { position: absolute; top: 50%; width: 100%; height: 2px; background: repeating-linear-gradient(90deg, transparent, transparent 25px, rgba(255, 255, 255, 0.5) 25px, rgba(255, 255, 255, 0.5) 50px); transform: translateY(-50%); }
+        .wheel { position: absolute; bottom: 0; background: #2f3542; border-radius: 50%; border: 2px solid #111; }
         
-        .vehicle-headlight-right { right: -2px; bottom: 10px; width: 4px; height: 8px; background: #fff; border-radius: 4px; }
-        .vehicle-headlight-right::after { left: 0; width: 80px; height: 30px; background: radial-gradient(ellipse at left, rgba(255,255,200,0.8) 0%, transparent 70%); }
+        .vehicle-headlight-right { right: -2px; bottom: 8px; width: 3px; height: 6px; background: #fff; border-radius: 3px; }
+        .vehicle-headlight-right::after { left: 0; width: 70px; height: 24px; background: radial-gradient(ellipse at left, rgba(255,255,200,0.85) 0%, transparent 70%); }
 
-        .vehicle-headlight-left { left: -2px; bottom: 10px; width: 4px; height: 8px; background: #fff; border-radius: 4px; }
-        .vehicle-headlight-left::after { right: 0; width: 80px; height: 30px; background: radial-gradient(ellipse at right, rgba(255,255,200,0.8) 0%, transparent 70%); }
+        .vehicle-headlight-left { left: -2px; bottom: 8px; width: 3px; height: 6px; background: #fff; border-radius: 3px; }
+        .vehicle-headlight-left::after { right: 0; width: 70px; height: 24px; background: radial-gradient(ellipse at right, rgba(255,255,200,0.85) 0%, transparent 70%); }
 
-        .van { position: absolute; bottom: 40px; left: 100vw; width: 90px; height: 35px; z-index: 18; animation: driveRoadRTL 14s linear infinite 2s; }
-        .van-body { position: absolute; bottom: 8px; width: 100%; height: 27px; background: #2ed573; border-radius: 8px 4px 4px 4px; }
-        .van-window { position: absolute; top: 4px; left: 4px; width: 20px; height: 12px; background: #a4b0be; border-radius: 4px 0 0 0; }
-        .van .wheel { width: 18px; height: 18px; border-width: 2px; } .van .wheel-1 { left: 10px; } .van .wheel-2 { right: 10px; }
+        .van { position: absolute; bottom: 33px; left: 100vw; width: 75px; height: 28px; z-index: 18; animation: driveRoadRTL 14s linear infinite 2s; }
+        .van-body { position: absolute; bottom: 6px; width: 100%; height: 22px; background: #2ed573; border-radius: 6px 3px 3px 3px; }
+        .van-window { position: absolute; top: 3px; left: 3px; width: 16px; height: 10px; background: #a4b0be; border-radius: 3px 0 0 0; }
+        .van .wheel { width: 14px; height: 14px; } .van .wheel-1 { left: 8px; } .van .wheel-2 { right: 8px; }
 
-        .car-red { position: absolute; bottom: 40px; left: 100vw; width: 75px; height: 25px; z-index: 18; animation: driveRoadRTL 8s linear infinite 6s; }
-        .car-red .car-body { position: absolute; bottom: 6px; width: 100%; height: 14px; background: #ff4757; border-radius: 12px 4px 4px 4px; }
-        .car-red .car-top { position: absolute; bottom: 20px; right: 12px; width: 35px; height: 10px; background: #ff4757; border-radius: 8px 8px 0 0; } .car-red .car-top::after { content: ''; position: absolute; top: 2px; right: 4px; width: 25px; height: 6px; background: #333; }
-        .car-red .wheel { width: 14px; height: 14px; border-width: 2px; } .car-red .wheel-1 { left: 8px; } .car-red .wheel-2 { right: 12px; }
+        .truck { position: absolute; bottom: 6px; left: -100vw; width: 110px; height: 40px; z-index: 19; animation: driveRoadLTR 15s linear infinite; }
+        .truck .cabin { position: absolute; right: 0; bottom: 6px; width: 32px; height: 28px; background: #ff4757; border-radius: 6px 6px 3px 0; } .truck .cabin-window { position: absolute; top: 4px; right: 4px; width: 12px; height: 12px; background: #a4b0be; border-radius: 2px; }
+        .truck .trailer { position: absolute; left: 0; bottom: 6px; width: 72px; height: 32px; background: #ced6e0; border-radius: 3px; border: 1.5px solid #747d8c; }
+        .truck .wheel { width: 16px; height: 16px; } .truck .wheel-1 { left: 8px; } .truck .wheel-2 { left: 40px; } .truck .wheel-3 { right: 5px; } 
 
-        .truck { position: absolute; bottom: 10px; left: -100vw; width: 130px; height: 50px; z-index: 19; animation: driveRoadLTR 15s linear infinite; }
-        .truck .cabin { position: absolute; right: 0; bottom: 8px; width: 40px; height: 35px; background: #ff4757; border-radius: 8px 8px 4px 0; } .truck .cabin-window { position: absolute; top: 5px; right: 5px; width: 15px; height: 15px; background: #a4b0be; border-radius: 2px; }
-        .truck .trailer { position: absolute; left: 0; bottom: 8px; width: 85px; height: 38px; background: #ced6e0; border-radius: 4px; border: 2px solid #747d8c; }
-        .truck .wheel { width: 20px; height: 20px; } .truck .wheel-1 { left: 10px; } .truck .wheel-2 { left: 50px; } .truck .wheel-3 { right: 6px; } 
-
-        .car-blue { position: absolute; bottom: 10px; left: -100vw; width: 75px; height: 28px; z-index: 19; animation: driveRoadLTR 10s linear infinite 5s; }
-        .car-blue .car-body { position: absolute; bottom: 6px; width: 100%; height: 16px; background: #1e90ff; border-radius: 4px 12px 4px 4px; } .car-blue .car-top { position: absolute; bottom: 22px; left: 12px; width: 40px; height: 12px; background: #1e90ff; border-radius: 8px 8px 0 0; } .car-blue .car-top::after { content: ''; position: absolute; top: 2px; left: 5px; width: 30px; height: 8px; background: #a4b0be; }
-        .car-blue .wheel { width: 16px; height: 16px; border-width: 2px; } .car-blue .wheel-1 { left: 8px; } .car-blue .wheel-2 { right: 12px; }
+        .car-blue { position: absolute; bottom: 6px; left: -100vw; width: 62px; height: 22px; z-index: 19; animation: driveRoadLTR 10s linear infinite 5s; }
+        .car-blue .car-body { position: absolute; bottom: 5px; width: 100%; height: 13px; background: #1e90ff; border-radius: 3px 10px 3px 3px; } .car-blue .car-top { position: absolute; bottom: 17px; left: 10px; width: 32px; height: 9px; background: #1e90ff; border-radius: 6px 6px 0 0; } .car-blue .car-top::after { content: ''; position: absolute; top: 2px; left: 4px; width: 24px; height: 6px; background: #a4b0be; }
+        .car-blue .wheel { width: 13px; height: 13px; } .car-blue .wheel-1 { left: 6px; } .car-blue .wheel-2 { right: 10px; }
 
         @keyframes driveRoadLTR { 0% { transform: translateX(0); } 100% { transform: translateX(200vw); } }
         @keyframes driveRoadRTL { 0% { transform: translateX(0); } 100% { transform: translateX(-200vw); } }
 
-        /* --- STREET LIGHTS (Z: 20) --- */
-        .street-light { position: absolute; bottom: 75px; width: 6px; height: 130px; background: #1a1a1a; z-index: 20; }
-        .street-light::before { content: ''; position: absolute; top: 0; left: -15px; width: 35px; height: 6px; background: #111; border-radius: 6px; }
-        .light-bulb { position: absolute; top: 6px; left: -10px; width: 24px; height: 12px; background: rgba(255,255,255,0.1); border-radius: 10px; transition: all 1s ease; }
-        .light-1 { left: 15%; } .light-2 { left: 45%; } .light-3 { right: 15%; }
+        /* --- FIXED: STREETLIGHTS SET BEHIND TRAINS (Z: 12) --- */
+        .street-light { position: absolute; bottom: 60px; width: 5px; height: 105px; background: #1a1a1a; z-index: 12; }
+        .street-light::before { content: ''; position: absolute; top: 0; left: -12px; width: 28px; height: 5px; background: #111; border-radius: 4px; }
+        .light-bulb { position: absolute; top: 5px; left: -8px; width: 20px; height: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; transition: all 1s ease; }
+        .light-1 { left: 12%; } .light-2 { left: 45%; } .light-3 { right: 12%; }
 
-        /* --- THEME / LIGHTS ON STATES --- */
-        .lights-on .light-bulb { background: #ffdb4d; box-shadow: 0 10px 30px 10px rgba(255, 219, 77, 0.7); }
+        /* --- THEME STATES --- */
+        .lights-on .light-bulb { background: #ffdb4d; box-shadow: 0 8px 25px 8px rgba(255, 219, 77, 0.6); }
         .lights-on .headlight { opacity: 1; }
         .lights-on .headlight::after { opacity: 1; }
-        .lights-on .house-window { background: #ffdb4d; box-shadow: 0 0 12px 3px rgba(255, 219, 77, 0.4); }
+        .lights-on .house-window { background: #ffdb4d; box-shadow: 0 0 10px 2px rgba(255, 219, 77, 0.4); }
         .lights-on .house { background: #111820; } .lights-on .house-roof { border-bottom-color: #0b1015; }
         .lights-on .clouds { opacity: 0.15; } .lights-on #stars-container { opacity: 1; } .lights-on .skyline { opacity: 0.2; }
 
-        /* DYNAMIC THEMES */
         .theme-morning { --tree-color: #1a3300; --ground-color: #336600; --hill-color: #264d00; --animal-color: #112200; background: linear-gradient(to top, #ff9a44, #fc6076); }
         .theme-morning .sun { animation: rise 4s ease-out forwards; } .theme-morning .skyline { opacity: 0.4; } 
 
@@ -299,27 +289,7 @@
             <div class="house h2">
                 <div class="house-roof"></div>
                 <div class="house-window window-1"></div>
-                <div class="cat"><div class="animal-part cat-body"></div><div class="animal-part cat-head"></div><div class="cat-ear-l"></div><div class="cat-ear-r"></div></div>
-            </div>
-
-            <div class="house h3">
-                <div class="house-roof"></div>
-                <div class="house-window window-1"></div><div class="house-window window-2"></div>
-            </div>
-
-            <div class="tree-container pine tree-1"><div class="tree-leaves"></div><div class="tree-trunk"></div></div>
-            <div class="tree-container oak tree-2"><div class="tree-leaves"></div><div class="tree-trunk"></div></div>
-            <div class="tree-container pine tree-3"><div class="tree-leaves"></div><div class="tree-trunk"></div></div>
-            <div class="tree-container oak tree-4"><div class="tree-leaves"></div><div class="tree-trunk"></div></div>
-            
-            <div class="grazing-animal">
-                <div class="animal-part gz-body"></div><div class="animal-part gz-neck"><div class="animal-part gz-head"></div></div>
-                <div class="animal-part gz-leg gz-l1"></div><div class="animal-part gz-leg gz-l2"></div><div class="animal-part gz-leg gz-l3"></div><div class="animal-part gz-leg gz-l4"></div>
-            </div>
-
-            <div class="standing-animal">
-                <div class="animal-part st-body"></div><div class="animal-part st-head"><div class="animal-part st-ear"></div></div><div class="animal-part st-tail"></div>
-                <div class="animal-part st-leg st-l1"></div><div class="animal-part st-leg st-l2"></div>
+                <div class="cat"><div class="animal-part cat-body"></div><div class="animal-part cat-head"></div></div>
             </div>
 
             <div class="standing-cow">
@@ -328,15 +298,8 @@
             </div>
 
             <div class="standing-horse">
-                <div class="animal-part horse-body"></div><div class="animal-part horse-neck"></div><div class="animal-part horse-head"></div><div class="animal-part horse-tail"></div>
+                <div class="animal-part horse-body"></div><div class="animal-part horse-neck"></div><div class="animal-part horse-head"></div>
                 <div class="animal-part horse-leg horse-l1"></div><div class="animal-part horse-leg horse-l2"></div><div class="animal-part horse-leg horse-l3"></div><div class="animal-part horse-leg horse-l4"></div>
-            </div>
-
-            <div class="deer-container">
-                <div class="deer">
-                    <div class="animal-part deer-head"></div><div class="animal-part deer-neck"></div><div class="animal-part deer-body"></div>
-                    <div class="animal-part deer-leg leg-f1"></div><div class="animal-part deer-leg leg-f2"></div><div class="animal-part deer-leg leg-b1"></div><div class="animal-part deer-leg leg-b2"></div>
-                </div>
             </div>
 
             <div class="track track-1"></div>
@@ -374,15 +337,12 @@
                     <div class="van-body"><div class="van-window"></div></div>
                     <div class="wheel wheel-1"></div><div class="wheel wheel-2"></div><div class="headlight vehicle-headlight-left"></div>
                 </div>
-                <div class="car-red">
-                    <div class="car-top"></div><div class="car-body"></div>
-                    <div class="wheel wheel-1"></div><div class="wheel wheel-2"></div><div class="headlight vehicle-headlight-left"></div>
-                </div>
 
                 <div class="truck">
                     <div class="trailer"></div><div class="cabin"><div class="cabin-window"></div></div>
                     <div class="wheel wheel-1"></div><div class="wheel wheel-2"></div><div class="wheel wheel-3"></div><div class="headlight vehicle-headlight-right"></div>
                 </div>
+                
                 <div class="car-blue">
                     <div class="car-top"></div><div class="car-body"></div>
                     <div class="wheel wheel-1"></div><div class="wheel wheel-2"></div><div class="headlight vehicle-headlight-right"></div>
@@ -399,7 +359,7 @@
             const starsContainer = document.getElementById("stars-container");
             const landscape = document.getElementById("landscape");
 
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 25; i++) {
                 let star = document.createElement("div");
                 star.classList.add("star");
                 star.style.width = Math.random() * 2 + 1 + "px";
