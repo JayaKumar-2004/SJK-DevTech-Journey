@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jack | Landing Section</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #00ffcc; /* Neon Cyan */
+            --primary-glow: rgba(0, 255, 204, 0.5);
+            --bg-dark: #0a0a0f;
+            --text-light: #e0e6ed;
+            --text-muted: #8b9bb4;
+        }
+
+        body, html {
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* --- ANIMATED CYBER GRID BACKGROUND --- */
+        .grid-background {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: 
+                linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+            animation: gridMove 10s linear infinite;
+        }
+        /* Fade the grid out at the top */
+        .grid-fade {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at center, transparent 0%, var(--bg-dark) 70%);
+            z-index: -1;
+        }
+
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(40px) translateZ(-200px); }
+        }
+
+        /* --- NAVBAR --- */
+        nav {
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--text-light);
+            letter-spacing: 2px;
+        }
+        .logo span { color: var(--primary); text-shadow: 0 0 10px var(--primary-glow); }
+        
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* Hide links on very small mobile screens for now */
+        @media (max-width: 768px) { .nav-links { display: none; } }
+
+        /* --- LANDING LAYOUT --- */
+        .landing-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5% 10%;
+            min-height: 80vh;
+            position: relative;
+            z-index: 10;
+        }
+
+        @media (max-width: 992px) {
+            .landing-container {
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+                padding: 10% 5%;
+                gap: 4rem;
+            }
+        }
+
+        /* --- LEFT SIDE: TEXT CONTENT --- */
+        .text-content {
+            flex: 1;
+            max-width: 600px;
+        }
+        .greeting {
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .name {
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+        
+        /* Typing Effect Container */
+        .typing-container {
+            height: 40px; /* Fixed height so it doesn't jump */
+            margin-bottom: 1.5rem;
+        }
+        .typing-text {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            color: var(--text-muted);
+            font-weight: 600;
+            border-right: 3px solid var(--primary);
+            white-space: nowrap;
+            overflow: hidden;
+            padding-right: 5px;
+            display: inline-block;
+            animation: blinkCursor 0.7s infinite;
+        }
+
+        .bio {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+        }
+        @media (max-width: 992px) { .cta-buttons { justify-content: center; } }
+        
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.1);
+        }
+        .btn-primary:hover {
+            background: var(--primary);
+            color: var(--bg-dark);
+            box-shadow: 0 0 20px var(--primary-glow);
+            transform: translateY(-3px);
+        }
+
+        @keyframes blinkCursor {
+            0%, 100% { border-color: transparent; }
+            50% { border-color: var(--primary); }
+        }
+
+        /* --- RIGHT SIDE: PURE CSS 3D PHONE --- */
+        .visual-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px; /* Activates 3D space */
+        }
+
+        .phone-3d {
+            position: relative;
+            width: 260px;
+            height: 520px;
+            background: #1a1b26;
+            border-radius: 35px;
+            transform-style: preserve-3d;
+            transform: rotateY(-25deg) rotateX(15deg);
+            animation: floatPhone 6s ease-in-out infinite;
+            box-shadow: 
+                inset 0 0 15px rgba(255,255,255,0.1),
+                -15px 15px 30px rgba(0,0,0,0.8),
+                0 0 40px rgba(0, 255, 204, 0.2);
+        }
+
+        /* Phone edges for 3D thickness */
+        .phone-3d::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0f172a; border-radius: 35px;
+            transform: translateZ(-15px);
+            box-shadow: -5px 10px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Phone Screen */
+        .phone-screen {
+            position: absolute;
+            top: 15px; left: 15px; right: 15px; bottom: 15px;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border-radius: 20px;
+            border: 2px solid #334155;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transform: translateZ(2px);
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        /* Mobile Notch */
+        .phone-notch {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 100px; height: 20px; background: #0f172a;
+            border-radius: 0 0 10px 10px; z-index: 10;
+        }
+
+        /* Raksha-Suraksha App Interface on Screen */
+        .app-icon {
+            width: 80px; height: 90px;
+            position: relative; margin-bottom: 20px;
+        }
+        /* Pure CSS Shield */
+        .shield {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: transparent;
+            border: 4px solid var(--primary);
+            border-radius: 10px 10px 40px 40px;
+            box-shadow: 0 0 15px var(--primary-glow), inset 0 0 15px var(--primary-glow);
+            animation: pulseShield 2s infinite alternate;
+        }
+        .shield::after {
+            content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: var(--primary); font-size: 2rem; font-weight: bold; text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .app-text {
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px var(--primary-glow);
+        }
+        .app-subtext {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        /* Floating 3D Elements out of the screen */
+        .float-badge {
+            position: absolute;
+            background: rgba(0, 255, 204, 0.1);
+            border: 1px solid var(--primary);
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: bold;
+            transform: translateZ(40px); /* Pops out in 3D */
+            backdrop-filter: blur(4px);
+        }
+        .badge-1 { top: 20%; left: -30px; animation: floatBadge 4s ease-in-out infinite 0.5s; }
+        .badge-2 { bottom: 25%; right: -20px; animation: floatBadge 4s ease-in-out infinite 1.5s; }
+
+        @keyframes floatPhone {
+            0%, 100% { transform: rotateY(-25deg) rotateX(15deg) translateY(0px); }
+            50% { transform: rotateY(-20deg) rotateX(10deg) translateY(-20px); }
+        }
+        @keyframes floatBadge {
+            0%, 100% { transform: translateZ(40px) translateY(0); }
+            50% { transform: translateZ(40px) translateY(-10px); }
+        }
+        @keyframes pulseShield {
+            0% { box-shadow: 0 0 10px var(--primary-glow), inset 0 0 10px var(--primary-glow); }
+            100% { box-shadow: 0 0 25px var(--primary), inset 0 0 20px var(--primary); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Animated Background Grid -->
+    <div class="grid-background"></div>
+    <div class="grid-fade"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">J<span>.</span></div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#career">Career</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Main Landing Container -->
+    <div class="landing-container">
+        
+        <!-- Left: Text Info -->
+        <div class="text-content">
+            <span class="greeting">WELCOME TO MY WORLD</span>
+            <h1 class="name">Hi, I'm Jack.</h1>
+            
+            <div class="typing-container">
+                <span class="typing-text" id="typewriter"></span>
+            </div>
+
+            <p class="bio">
+                A final-year BCA student and passionate developer currently crafting web architectures and advanced mobile security solutions. Let's build something secure and beautiful.
+            </p>
+
+            <div class="cta-buttons">
+                <a href="#projects" class="btn btn-primary">Explore Projects</a>
+                <a href="#career" class="btn btn-primary" style="background: var(--bg-dark);">My Journey</a>
+            </div>
+        </div>
+
+        <!-- Right: 3D Visual Content -->
+        <div class="visual-content">
+            <div class="phone-3d">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                    <div class="app-icon">
+                        <div class="shield"></div>
+                    </div>
+                    <div class="app-text">Raksha-Suraksha</div>
+                    <div class="app-subtext">System Active</div>
+                </div>
+                <!-- 3D Pop-out Badges -->
+                <div class="float-badge badge-1">Mobile Dev</div>
+                <div class="float-badge badge-2">Full-Stack</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript for the Typing Effect -->
+    <script>
+        const phrases = [
+            "Full-Stack Developer",
+            "Mobile Security Innovator",
+            "BCA Graduate",
+            "Python Enthusiast"
+        ];
+        
+        let currentPhraseIndex = 0;
+        let currentCharIndex = 0;
+        let isDeleting = false;
+        let typingSpeed = 100;
+        const typewriterElement = document.getElementById("typewriter");
+
+        function typeLoop() {
+            const currentPhrase = phrases[currentPhraseIndex];
+            
+            if (isDeleting) {
+                // Remove a character
+                typewriterElement.textContent = currentPhrase.substring(0, currentCharIndex - 1);
+                currentCharIndex--;
+                typingSpeed = 50; // Faster when deleting
+            } else {
+                // Add a character
+                typewriterElement.textContent = currentPhrase.substring(0, currentCharIndex + 1);
+                currentCharIndex++;
+                typingSpeed = 100; // Normal typing speed
+            }
+
+            // Logic to switch between typing and deleting
+            if (!isDeleting && currentCharIndex === currentPhrase.length) {
+                isDeleting = true;
+                typingSpeed = 1500; // Pause before starting to delete
+            } else if (isDeleting && currentCharIndex === 0) {
+                isDeleting = false;
+                currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+                typingSpeed = 500; // Pause before typing the next word
+            }
+
+            setTimeout(typeLoop, typingSpeed);
+        }
+
+        // Start the typing loop
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(typeLoop, 1000); // Wait 1 second before starting
+        });
+    </script>
+</body>
+</html>
