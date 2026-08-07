@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jack | Portfolio Intro</title>
+    <title>Jack | Time-Based Environment Intro</title>
     <style>
         * {
             margin: 0;
@@ -28,6 +28,7 @@
             background-color: #000; 
         }
 
+        /* FIXED: Removed the buggy background transition that caused Chrome banding */
         #environment {
             position: relative; 
             width: 100vw; 
@@ -37,10 +38,14 @@
             flex-direction: column;
             justify-content: center; 
             align-items: center; 
-            transition: background 2s ease-in-out; 
             z-index: 1; 
             overflow: hidden;
+            background-size: cover;
+            background-repeat: no-repeat;
+            animation: envFadeIn 1.5s ease-in-out forwards;
         }
+
+        @keyframes envFadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         #greeting-text {
             font-size: clamp(1.8rem, 5vw, 3.8rem); 
@@ -93,7 +98,6 @@
         /* --- BULLETPROOF LANDSCAPE --- */
         .landscape { position: absolute; bottom: 0; left: 0; width: 100%; height: 260px; z-index: 10; }
         
-        /* FIXED: Skyline repeat-x prevents vertical stripe artifacts */
         .skyline { 
             position: absolute; 
             bottom: 125px; 
@@ -143,7 +147,7 @@
         .horse-l1 { left: 3px; } .horse-l2 { left: 8px; } .horse-l3 { right: 3px; } .horse-l4 { right: 8px; }
 
         /* --- TRAIN TRACKS & TRAINS --- */
-        .track { position: absolute; left: 0; width: 100%; height: 5px; border-top: 1.5px solid #57606f; border-bottom: 1.5px solid #57606f; background: repeating-linear-gradient(90deg, transparent, transparent 12px, rgba(17,17,17,0.8) 12px, rgba(17,17,17,0.8) 16px); }
+        .track { position: absolute; left: 0; width: 100%; height: 6px; border-top: 1.5px solid #57606f; border-bottom: 1.5px solid #57606f; background: repeating-linear-gradient(90deg, transparent, transparent 12px, rgba(17,17,17,0.8) 12px, rgba(17,17,17,0.8) 16px); }
         .track-1 { bottom: 102px; z-index: 13; } 
         .track-2 { bottom: 74px; z-index: 15; }
 
@@ -181,11 +185,9 @@
         .train-headlight-left { left: -2px; bottom: 6px; width: 3px; height: 10px; background: #fff; border-radius: 3px; }
         .train-headlight-left::after { right: 0; width: 100px; height: 32px; background: radial-gradient(ellipse at right, rgba(255,255,255,0.85) 0%, transparent 70%); }
 
-        /* LTR Train (Back) */
         .train-ltr { bottom: 105px; left: -100vw; z-index: 14; animation: driveLTR 18s linear infinite; }
         .train-ltr .train-carriage { background: #1e3a8a; } 
         
-        /* RTL Train (Front) */
         .train-rtl { bottom: 77px; left: 100vw; z-index: 16; animation: driveRTL 22s linear infinite; }
         .train-rtl .train-carriage { background: #b91c1c; } 
 
@@ -208,7 +210,7 @@
         .van-window { position: absolute; top: 3px; left: 3px; width: 16px; height: 10px; background: #a4b0be; border-radius: 3px 0 0 0; }
         .van .wheel { width: 14px; height: 14px; } .van .wheel-1 { left: 8px; } .van .wheel-2 { right: 8px; }
 
-        .truck { position: absolute; bottom: 6px; left: -100vw; width: 110px; height: 40px; z-index: 19; animation: driveRoadLTR 15s linear infinite; }
+        .truck { position: absolute; bottom: 6px; left: -100vw; width: 130px; height: 40px; z-index: 19; animation: driveRoadLTR 15s linear infinite; }
         .truck .cabin { position: absolute; right: 0; bottom: 6px; width: 32px; height: 28px; background: #ff4757; border-radius: 6px 6px 3px 0; } .truck .cabin-window { position: absolute; top: 4px; right: 4px; width: 12px; height: 12px; background: #a4b0be; border-radius: 2px; }
         .truck .trailer { position: absolute; left: 0; bottom: 6px; width: 72px; height: 32px; background: #ced6e0; border-radius: 3px; border: 1.5px solid #747d8c; }
         .truck .wheel { width: 16px; height: 16px; } .truck .wheel-1 { left: 8px; } .truck .wheel-2 { left: 40px; } .truck .wheel-3 { right: 5px; } 
@@ -220,7 +222,7 @@
         @keyframes driveRoadLTR { 0% { transform: translateX(0); } 100% { transform: translateX(200vw); } }
         @keyframes driveRoadRTL { 0% { transform: translateX(0); } 100% { transform: translateX(-200vw); } }
 
-        /* --- FIXED: STREETLIGHTS SET BEHIND TRAINS (Z: 12) --- */
+        /* --- STREET LIGHTS (Z: 12) --- */
         .street-light { position: absolute; bottom: 60px; width: 5px; height: 105px; background: #1a1a1a; z-index: 12; }
         .street-light::before { content: ''; position: absolute; top: 0; left: -12px; width: 28px; height: 5px; background: #111; border-radius: 4px; }
         .light-bulb { position: absolute; top: 5px; left: -8px; width: 20px; height: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; transition: all 1s ease; }
@@ -266,7 +268,6 @@
             <div class="bird-wrapper bird-1"><div class="bird"></div></div>
             <div class="bird-wrapper bird-2"><div class="bird"></div></div>
             <div class="bird-wrapper bird-3"><div class="bird"></div></div>
-            <div class="bird-wrapper bird-4"><div class="bird"></div></div>
         </div>
 
         <div class="clouds">
@@ -302,6 +303,11 @@
                 <div class="animal-part horse-leg horse-l1"></div><div class="animal-part horse-leg horse-l2"></div><div class="animal-part horse-leg horse-l3"></div><div class="animal-part horse-leg horse-l4"></div>
             </div>
 
+            <!-- STREET LIGHTS BEHIND TRAINS -->
+            <div class="street-light light-1"><div class="light-bulb"></div></div>
+            <div class="street-light light-2"><div class="light-bulb"></div></div>
+            <div class="street-light light-3"><div class="light-bulb"></div></div>
+
             <div class="track track-1"></div>
             
             <!-- BACK TRAIN (Left to Right) -->
@@ -325,10 +331,6 @@
                 <div class="train-carriage">API</div>
                 <div class="train-carriage">AWS</div>
             </div>
-
-            <div class="street-light light-1"><div class="light-bulb"></div></div>
-            <div class="street-light light-2"><div class="light-bulb"></div></div>
-            <div class="street-light light-3"><div class="light-bulb"></div></div>
 
             <div class="road">
                 <div class="road-lines"></div>
@@ -359,7 +361,7 @@
             const starsContainer = document.getElementById("stars-container");
             const landscape = document.getElementById("landscape");
 
-            for (let i = 0; i < 25; i++) {
+            for (let i = 0; i < 30; i++) {
                 let star = document.createElement("div");
                 star.classList.add("star");
                 star.style.width = Math.random() * 2 + 1 + "px";
@@ -397,6 +399,11 @@
             greetingText.innerHTML = `${greeting}<br>SIR/MA'AM`;
             
             if(needsLights) { landscape.classList.add('lights-on'); }
+            
+            // Redirects to landing page exactly 10 seconds after load
+            setTimeout(() => {
+                window.location.href = "landing.html";
+            }, 10000);
         });
     </script>
 </body>
